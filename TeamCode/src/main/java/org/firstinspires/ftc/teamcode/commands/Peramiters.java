@@ -1,29 +1,55 @@
 package org.firstinspires.ftc.teamcode.commands;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
+// Remove: import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Peramiters {
-    public com.qualcomm.robotcore.hardware.Servo servo0 = null;
+    public Servo servo0 = null; // Changed to Servo for clarity
+    private HardwareMap localHardwareMap; // Store HardwareMap locally
 
-
-
-    public void sPeramiter () {
-        servo0 = hardwareMap.get(com.qualcomm.robotcore.hardware.Servo.class, "servo0");
-
+    // Constructor to receive HardwareMap
+    public Peramiters(HardwareMap hardwareMap) {
+        this.localHardwareMap = hardwareMap;
+        // Initialize servo here directly if it's always needed
+        // or ensure sPeramiter is called after construction.
     }
 
-    public void init () {
-        servo0.setPosition(0);
+
+    // Method to initialize the specific servo for this instance
+    public void sPeramiter () {
+        if (this.localHardwareMap != null) {
+            servo0 = this.localHardwareMap.get(Servo.class, "servo0");
+        } else {
+            // Handle error: hardwareMap was not provided
+            // You might throw an exception or log an error to telemetry
+            // For now, let's assume telemetry is available via a static init or passed differently
+            // if (Telemetry != null) Telemetry.addData("Error", "HardwareMap not initialized in Peramiters");
+        }
+    }
+
+    public void Zero() {
+        if (servo0 != null) {
+            servo0.setPosition(0);
+        }
     }
 
     public void GPP () {
-        servo0.setPosition(.25);
+        if (servo0 != null) {
+            servo0.setPosition(0.25);
+        }
     }
 
     public void PGP () {
-        servo0.setPosition(.5);
+        if (servo0 != null) {
+            servo0.setPosition(0.5);
+        }
     }
 
     public void PPG () {
-        servo0.setPosition(1);
+        if (servo0 != null) {
+            servo0.setPosition(1);
+        }
     }
 }
