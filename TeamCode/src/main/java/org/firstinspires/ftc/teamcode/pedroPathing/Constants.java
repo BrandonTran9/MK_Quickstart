@@ -34,7 +34,7 @@ public class Constants {
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .useBrakeModeInTeleOp(true)
+            //.useBrakeModeInTeleOp(true)
             .xVelocity(64.17174572081078)
             .yVelocity(56.61691788801058);
 
