@@ -16,6 +16,9 @@ public class Peramiters {
         // or ensure sPeramiter is called after construction.
     }
 
+    public static void init(HardwareMap hardwareMap, Telemetry telemetry) {
+    }
+
 
     // Method to initialize the specific servo for this instance
     public void sPeramiter () {
