@@ -33,10 +33,38 @@ public class TestAuto extends OpMode {
 
 
     // --- YOU MUST CHANGE THESE IDs TO MATCH THE REAL TAGS YOU'RE USING ---
-    private static final int GPP = 21;// Example
-    private static final int PGP = 22;  // Example
-    private static final int PPG = 23;  // Example
+    private static final int GPP = 21;
+    private static final int PGP = 22;
+    private static final int PPG = 23;
 
+
+
+    @Override
+    public void init() {
+        telemetry.addData("Status", "Initializing...");
+        telemetry.update();
+
+        servoController = new Parameters(hardwareMap); // Pass hardwareMap here
+        Parameters.init(hardwareMap, telemetry);
+        servoController.sPeramiter();  // Initialize the servo
+
+        servoController.Zero();
+
+        Parameters.init(hardwareMap, telemetry);
+        cameraSystem = new Cam2(hardwareMap, telemetry);
+        currentLatchedTarget = TargetAprilTag.NONE; // Ensure it's reset on init
+        aprilTagDecisionLatched = false;
+
+        // Initialization code (e.g., hardware mapping)
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+
+
+
+
+
+    }
 
 
 
@@ -93,39 +121,6 @@ public class TestAuto extends OpMode {
     }
 
 
-
-
-
-
-
-
-
-    @Override
-    public void init() {
-        telemetry.addData("Status", "Initializing...");
-        telemetry.update();
-
-        servoController = new Parameters(hardwareMap); // Pass hardwareMap here
-        Parameters.init(hardwareMap, telemetry);
-        servoController.sPeramiter();  // Initialize the servo
-
-        servoController.Zero();
-
-        Parameters.init(hardwareMap, telemetry);
-        cameraSystem = new Cam2(hardwareMap, telemetry);
-        currentLatchedTarget = TargetAprilTag.NONE; // Ensure it's reset on init
-        aprilTagDecisionLatched = false;
-
-        // Initialization code (e.g., hardware mapping)
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
-
-
-
-
-
-
-    }
 
 
     @Override
