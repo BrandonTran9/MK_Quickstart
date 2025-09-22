@@ -60,10 +60,6 @@ public class TestAuto extends OpMode {
         telemetry.update();
 
 
-
-
-
-
     }
 
 
