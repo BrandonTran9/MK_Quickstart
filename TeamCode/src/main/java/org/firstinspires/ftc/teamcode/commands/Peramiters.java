@@ -39,19 +39,19 @@ public class Peramiters {
         }
     }
 
-    public void GPP () {
+    public void GPPT() {
         if (servo0 != null) {
             servo0.setPosition(0.25);
         }
     }
 
-    public void PGP () {
+    public void PGPT() {
         if (servo0 != null) {
             servo0.setPosition(0.5);
         }
     }
 
-    public void PPG () {
+    public void PPGT() {
         if (servo0 != null) {
             servo0.setPosition(1);
         }
