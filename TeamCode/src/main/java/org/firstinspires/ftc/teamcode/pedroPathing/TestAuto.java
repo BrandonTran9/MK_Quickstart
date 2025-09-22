@@ -3,7 +3,8 @@ package org.firstinspires.ftc.teamcode.pedroPathing; // make sure this aligns wi
 import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import org.firstinspires.ftc.teamcode.commands.Peramiters;
+
+import org.firstinspires.ftc.teamcode.commands.Parameters;
 
 import com.pedropathing.util.Timer;
 
@@ -13,7 +14,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 public class TestAuto extends OpMode {
 
     // DECLARE servoController HERE
-    private Peramiters servoController; // This tells Java that servoController will be an object of type Peramiters
+    private Parameters servoController; // This tells Java that servoController will be an object of type Parameters
     private Cam2 cameraSystem;
 
     private Follower follower;
@@ -22,7 +23,7 @@ public class TestAuto extends OpMode {
 
     // Enum to represent which of our target AprilTags is currently detected
     enum TargetAprilTag {
-        NONE,           // No target AprilTag is currently visible
+        NONE, // No target AprilTag is currently visible
         DGPP, // e.g., Corresponds to Obelisk GPP ID 21
         DPGP, // e.g., Corresponds to Obelisk PGP ID 22
         DPPG, // e.g., Corresponds to Obelisk PPG ID 23
@@ -104,13 +105,13 @@ public class TestAuto extends OpMode {
         telemetry.addData("Status", "Initializing...");
         telemetry.update();
 
-        servoController = new Peramiters(hardwareMap); // Pass hardwareMap here
-        Peramiters.init(hardwareMap, telemetry);
+        servoController = new Parameters(hardwareMap); // Pass hardwareMap here
+        Parameters.init(hardwareMap, telemetry);
         servoController.sPeramiter();  // Initialize the servo
 
         servoController.Zero();
 
-        Peramiters.init(hardwareMap, telemetry);
+        Parameters.init(hardwareMap, telemetry);
         cameraSystem = new Cam2(hardwareMap, telemetry);
         currentLatchedTarget = TargetAprilTag.NONE; // Ensure it's reset on init
         aprilTagDecisionLatched = false;

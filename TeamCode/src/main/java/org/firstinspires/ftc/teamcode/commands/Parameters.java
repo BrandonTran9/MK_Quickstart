@@ -5,12 +5,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class Peramiters {
+public class Parameters {
     public Servo servo0 = null; // Changed to Servo for clarity
     private HardwareMap localHardwareMap; // Store HardwareMap locally
 
     // Constructor to receive HardwareMap
-    public Peramiters(HardwareMap hardwareMap) {
+    public Parameters(HardwareMap hardwareMap) {
         this.localHardwareMap = hardwareMap;
         // Initialize servo here directly if it's always needed
         // or ensure sPeramiter is called after construction.
@@ -29,7 +29,7 @@ public class Peramiters {
             // Handle error: hardwareMap was not provided
             // You might throw an exception or log an error to telemetry
             // For now, let's assume telemetry is available via a static init or passed differently
-            // if (Telemetry != null) Telemetry.addData("Error", "HardwareMap not initialized in Peramiters");
+            // if (Telemetry != null) Telemetry.addData("Error", "HardwareMap not initialized in Parameters");
         }
     }
 
