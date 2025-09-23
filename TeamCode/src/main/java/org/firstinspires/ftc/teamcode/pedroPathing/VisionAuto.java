@@ -1,16 +1,16 @@
 package org.firstinspires.ftc.teamcode.pedroPathing; // make sure this aligns with class location
 
+import static java.lang.Thread.sleep;
+
 import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-
 import org.firstinspires.ftc.teamcode.commands.Commands;
-
-
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+import org.firstinspires.ftc.teamcode.commands.Movement;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+
 
 @Autonomous(name = "Vision Auto", group = "Robot")
 public class VisionAuto extends OpMode {
@@ -18,6 +18,7 @@ public class VisionAuto extends OpMode {
     // DECLARE servoController HERE
     private Commands servoController; // This tells Java that servoController will be an object of type Commands
     private Cam2 cameraSystem;
+    private Movement movement;
 
     private ElapsedTime detectionTimer = new ElapsedTime();
     private static final double DETECTION_TIMEOUT_SECONDS = 1.0;
@@ -35,7 +36,7 @@ public class VisionAuto extends OpMode {
     }
     private TargetAprilTag currentLatchedTarget = TargetAprilTag.NONE;
     private boolean aprilTagDecisionLatched = false; // Flag to indicate if we've made our one-time decision
-    private boolean decisionMade = false;
+
 
 
     // --- YOU MUST CHANGE THESE IDs TO MATCH THE REAL TAGS YOU'RE USING ---
@@ -134,21 +135,35 @@ public class VisionAuto extends OpMode {
                         // Now the outer 'if' condition will fail on next loop
 
                         // Command the servo ONCE based on the decision
-                        switch (currentLatchedTarget) {
-                            case DGPP:
-                                servoController.GPPT();
-                                break;
-                            case DPGP:
-                                servoController.PGPT();
-                                break;
-                            case DPPG:
-                                servoController.PPGT();
-                                break;
-                            case NONE:
-                                servoController.Zero();
-                                break;
+                        if (currentLatchedTarget == TargetAprilTag.DGPP) {
+                            servoController.GPPT();
+                            movement.travelGPP();
+
+
+
+
+                        } else if (currentLatchedTarget == TargetAprilTag.DPGP) {
+                            servoController.PGPT();
+
+
+
+                        } else if (currentLatchedTarget == TargetAprilTag.DPPG) {
+                            servoController.PPGT();
+
+
+
+
+                        } else if (currentLatchedTarget == TargetAprilTag.NONE) {
+                            servoController.Zero();
+
+
+
+
+
 
                         }
+
+
 
                     }
                 }
