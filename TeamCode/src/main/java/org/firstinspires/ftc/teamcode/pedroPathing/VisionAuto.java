@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
-@Autonomous(name = "Example Auto", group = "Examples")
-public class TestAuto extends OpMode {
+@Autonomous(name = "Vision Auto", group = "Robot")
+public class VisionAuto extends OpMode {
 
     // DECLARE servoController HERE
     private Parameters servoController; // This tells Java that servoController will be an object of type Parameters
