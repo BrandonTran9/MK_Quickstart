@@ -8,9 +8,9 @@ import com.pedropathing.geometry.BezierLine;
 
 public class Movement {
     private final Pose startPose = new Pose(97, 8, Math.toRadians(90)); // Robot start pose
-    private final Pose GPPT = new Pose(121, 35, Math.toRadians(90)); // GPPT Obelisk pose/test
-    private final Pose PGPT = new Pose(121, 59, Math.toRadians(90)); // PGPT Obelisk pose/test
-    private final Pose PPGT = new Pose(121, 83, Math.toRadians(90)); // PPGT Obelisk pose/test
+    private final Pose GPPM = new Pose(121, 35, Math.toRadians(90)); // GPPM Obelisk pose/test
+    private final Pose PGPM = new Pose(121, 59, Math.toRadians(90)); // PGPM Obelisk pose/test
+    private final Pose PPGM = new Pose(121, 83, Math.toRadians(90)); // PPGM Obelisk pose/test
 
 }
 

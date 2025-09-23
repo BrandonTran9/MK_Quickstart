@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.commands.Parameters;
 
 import com.pedropathing.util.Timer;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
@@ -16,6 +17,9 @@ public class TestAuto extends OpMode {
     // DECLARE servoController HERE
     private Parameters servoController; // This tells Java that servoController will be an object of type Parameters
     private Cam2 cameraSystem;
+
+    private ElapsedTime detectionTimer = new ElapsedTime();
+    private static final double DETECTION_TIMEOUT_SECONDS = 1.0;
 
     private Follower follower;
     private Timer pathTimer, actionTimer, opmodeTimer;
@@ -30,6 +34,7 @@ public class TestAuto extends OpMode {
     }
     private TargetAprilTag currentLatchedTarget = TargetAprilTag.NONE;
     private boolean aprilTagDecisionLatched = false; // Flag to indicate if we've made our one-time decision
+    private boolean decisionMade = false;
 
 
     // --- YOU MUST CHANGE THESE IDs TO MATCH THE REAL TAGS YOU'RE USING ---
@@ -64,28 +69,43 @@ public class TestAuto extends OpMode {
 
 
 
+    @Override
+    public void start() {
+        // This method is called once when the OpMode starts (after INIT, before first loop).
+        detectionTimer.reset();          // Start the timeout timer for AprilTag detection
+        aprilTagDecisionLatched = false; // Ensure detection logic runs by resetting the main latch
+        currentLatchedTarget = TargetAprilTag.NONE; // Reset just in case
+    }
+
+
+
+
+
 
     @Override
     public void loop() {
 
         // These loop the movements of the robot, these must be called continuously in order to work
-        follower.update();
+        //follower.update();
         //autonomousPathUpdate();
 
         if (!aprilTagDecisionLatched) {
             if (cameraSystem != null) {
                 cameraSystem.updateDetections();
+
                 TargetAprilTag detectedThisPass = TargetAprilTag.NONE;
                 AprilTagDetection foundTag;
 
                 foundTag = cameraSystem.getDetectionById(GPP);
                 if (foundTag != null) {
                     detectedThisPass = TargetAprilTag.DGPP;
-                } else {
+                }
+                else {
                     foundTag = cameraSystem.getDetectionById(PGP);
                     if (foundTag != null) {
                         detectedThisPass = TargetAprilTag.DPGP;
-                    } else {
+                    }
+                    else {
                         foundTag = cameraSystem.getDetectionById(PPG);
                         if (foundTag != null) {
                             detectedThisPass = TargetAprilTag.DPPG;
@@ -93,32 +113,60 @@ public class TestAuto extends OpMode {
                         // Add checks for ID_FOR_LOCATION_4 and ID_FOR_LOCATION_5 if you use them
                     }
                 }
-                if (detectedThisPass == TargetAprilTag.DGPP);{
-                    servoController.GPPT();
-                }
-                if (detectedThisPass == TargetAprilTag.DPGP);{
-                    servoController.PGPT();
-                }
-                if (detectedThisPass == TargetAprilTag.DPPG);{
-                    servoController.PPGT();
-                }
 
+                // If we haven't already latched due to camera failure, proceed with tag/timeout check
+                if (!aprilTagDecisionLatched) { // This check might be redundant if camera failure sets it
+                    boolean decisionMadeThisPass = false; // Temporary flag for this loop iteration
+
+                    if (detectedThisPass != TargetAprilTag.NONE) {
+                        currentLatchedTarget = detectedThisPass;
+                        decisionMadeThisPass = true;
+                        telemetry.addData("Tag Detected", currentLatchedTarget.toString());
+                    } else if (detectionTimer.seconds() >= DETECTION_TIMEOUT_SECONDS) {
+                        currentLatchedTarget = TargetAprilTag.NONE; // Default to NONE on timeout
+                        decisionMadeThisPass = true;
+                        telemetry.addData("Detection Timeout", "Defaulting to NONE");
+                    }
+
+                    if (decisionMadeThisPass) {
+                        aprilTagDecisionLatched = true; // <<<< THIS IS THE KEY ADDITION / CHANGE
+                        // Now the outer 'if' condition will fail on next loop
+
+                        // Command the servo ONCE based on the decision
+                        switch (currentLatchedTarget) {
+                            case DGPP:
+                                servoController.GPPT();
+                                break;
+                            case DPGP:
+                                servoController.PGPT();
+                                break;
+                            case DPPG:
+                                servoController.PPGT();
+                                break;
+                            case NONE:
+                                servoController.Zero();
+                                break;
+
+                        }
+
+                    }
+                }
             }
         }
 
-
+/*
         // Feedback to Driver Hub for debugging
         telemetry.addData("path state", pathState);
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
         telemetry.update();
-
+*/
     }
 
 
 
-
+/*
     @Override
     public void stop() {
         // Optional: Cleanup code
@@ -128,4 +176,6 @@ public class TestAuto extends OpMode {
         telemetry.addData("Status", "Stopped");
         telemetry.update();
     }
+
+ */
 }
