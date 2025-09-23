@@ -69,11 +69,12 @@ public class TestAuto extends OpMode {
     public void loop() {
 
         // These loop the movements of the robot, these must be called continuously in order to work
-        follower.update();
+        //follower.update();
         //autonomousPathUpdate();
 
         if (!aprilTagDecisionLatched) {
             if (cameraSystem != null) {
+
                 cameraSystem.updateDetections();
                 TargetAprilTag detectedThisPass = TargetAprilTag.NONE;
                 AprilTagDetection foundTag;
@@ -81,11 +82,14 @@ public class TestAuto extends OpMode {
                 foundTag = cameraSystem.getDetectionById(GPP);
                 if (foundTag != null) {
                     detectedThisPass = TargetAprilTag.DGPP;
-                } else {
+                }
+                else {
                     foundTag = cameraSystem.getDetectionById(PGP);
                     if (foundTag != null) {
                         detectedThisPass = TargetAprilTag.DPGP;
-                    } else {
+                    }
+                    else
+                    {
                         foundTag = cameraSystem.getDetectionById(PPG);
                         if (foundTag != null) {
                             detectedThisPass = TargetAprilTag.DPPG;
@@ -93,6 +97,9 @@ public class TestAuto extends OpMode {
                         // Add checks for ID_FOR_LOCATION_4 and ID_FOR_LOCATION_5 if you use them
                     }
                 }
+
+
+
                 if (detectedThisPass == TargetAprilTag.DGPP);{
                     servoController.GPPT();
                 }
@@ -106,14 +113,14 @@ public class TestAuto extends OpMode {
             }
         }
 
-
+        /*
         // Feedback to Driver Hub for debugging
         telemetry.addData("path state", pathState);
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
         telemetry.update();
-
+*/
     }
 
 
