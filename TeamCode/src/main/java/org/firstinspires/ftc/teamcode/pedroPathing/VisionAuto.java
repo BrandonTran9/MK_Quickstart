@@ -182,17 +182,4 @@ public class VisionAuto extends OpMode {
     }
 
 
-
-/*
-    @Override
-    public void stop() {
-        // Optional: Cleanup code
-        if (cameraSystem != null) {
-            cameraSystem.close();
-        }
-        telemetry.addData("Status", "Stopped");
-        telemetry.update();
-    }
-
- */
 }

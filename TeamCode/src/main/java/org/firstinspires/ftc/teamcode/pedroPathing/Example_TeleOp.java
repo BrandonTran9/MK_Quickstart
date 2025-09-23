@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 @TeleOp
 public class Example_TeleOp extends OpMode {
     private Follower follower;
-    public static Pose startingPose; //See ExampleAuto to understand how to use this
+    public static Pose startingPose; //See MoveTestAuto to understand how to use this
     private boolean automatedDrive;
     private Supplier<PathChain> pathChain;
     private TelemetryManager telemetryM;
