@@ -4,7 +4,8 @@ import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.commands.Parameters;
+import org.firstinspires.ftc.teamcode.commands.Commands;
+
 
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -15,7 +16,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 public class VisionAuto extends OpMode {
 
     // DECLARE servoController HERE
-    private Parameters servoController; // This tells Java that servoController will be an object of type Parameters
+    private Commands servoController; // This tells Java that servoController will be an object of type Commands
     private Cam2 cameraSystem;
 
     private ElapsedTime detectionTimer = new ElapsedTime();
@@ -49,13 +50,13 @@ public class VisionAuto extends OpMode {
         telemetry.addData("Status", "Initializing...");
         telemetry.update();
 
-        servoController = new Parameters(hardwareMap); // Pass hardwareMap here
-        Parameters.init(hardwareMap, telemetry);
-        servoController.sPeramiter();  // Initialize the servo
+        servoController = new Commands(hardwareMap); // Pass hardwareMap here
+        Commands.init(hardwareMap, telemetry);
+        servoController.sCommands();  // Initialize the servo
 
         servoController.Zero();
 
-        Parameters.init(hardwareMap, telemetry);
+        Commands.init(hardwareMap, telemetry);
         cameraSystem = new Cam2(hardwareMap, telemetry);
         currentLatchedTarget = TargetAprilTag.NONE; // Ensure it's reset on init
         aprilTagDecisionLatched = false;
