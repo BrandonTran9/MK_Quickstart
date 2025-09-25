@@ -22,17 +22,17 @@ private int pathState;
 
 
    // private final Pose startPose = new Pose(28.5, 128, Math.toRadians(180)); // Start Pose of our robot.
-    private final Pose scorePose = new Pose(60, 85, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    private final Pose pickup1Pose = new Pose(37, 121, Math.toRadians(0)); // Highest (First Set) of Artifacts from the Spike Mark.
+    public final Pose scorePose = new Pose(60, 85, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    public final Pose pickup1Pose = new Pose(37, 121, Math.toRadians(0)); // Highest (First Set) of Artifacts from the Spike Mark.
     public final Pose startPose = new Pose(97, 8, Math.toRadians(90)); // Robot start pose
-    private final Pose GPPM = new Pose(121, 35, Math.toRadians(90)); // GPPM Obelisk pose/test
-    private final Pose centerField = new Pose(72, 72, Math.toRadians(90)); // Robot start pose
+    public final Pose GPPM = new Pose(121, 35, Math.toRadians(90)); // GPPM Obelisk pose/test
+    public final Pose centerField = new Pose(72, 72, Math.toRadians(90)); // Robot start pose
 
 
 
 
-    private Path scorePreload;
-    private Path travelGPP;
+    public Path scorePreload;
+    public Path travelGPP;
 private PathChain grabPickup1, scorePickup1, grabPickup2, scorePickup2, grabPickup3, scorePickup3;
 
     public void buildPaths() {

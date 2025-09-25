@@ -6,13 +6,11 @@ import org.firstinspires.ftc.teamcode.commands.UselessMotor;
 import org.firstinspires.ftc.teamcode.commands.UslelessServo;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.SubsystemComponent;
-import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
@@ -27,7 +25,7 @@ public class NextFTCAuto extends NextFTCOpMode {
         );
     }
 
-    public Command autonomusRoutine() {
+    public Command autonomousRoutine() {
 
         return new SequentialGroup(
                 UselessMotor.INSTANCE.spinLeft,
@@ -47,7 +45,7 @@ public class NextFTCAuto extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed() {
-        autonomusRoutine().schedule();
+        autonomousRoutine().schedule();
     }
 
 }
