@@ -1,0 +1,35 @@
+package org.firstinspires.ftc.teamcode.commands;
+
+import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.groups.SequentialGroup;
+import dev.nextftc.core.subsystems.SubsystemGroup;
+
+public class MySubsystemGroup extends SubsystemGroup {
+    public static final MySubsystemGroup INSTANCE = new MySubsystemGroup();
+
+    private MySubsystemGroup () {
+        super(
+                UslelessServo.INSTANCE,
+                UselessMotor.INSTANCE
+        );
+    }
+    public MyOpMode() {
+        addComponents(
+                SubsystemComponent(MySubsystemGroup.INSTANCE)
+        );
+    }
+    public class MyRobot extends SubsystemGroup {
+        public static final MyRobot INSTANCE = new MyRobot();
+        private MyRobot() {
+            super(
+                    UslelessServo.INSTANCE,
+                    UselessMotor.INSTANCE
+            );
+        }
+    }
+    public final Command action = new SequentialGroup(
+            UslelessServo.INSTANCE.half,
+            UselessMotor.INSTANCE.spinLeft
+    ).named("action");
+}
+
