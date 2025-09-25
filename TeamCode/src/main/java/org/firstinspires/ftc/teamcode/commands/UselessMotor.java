@@ -15,7 +15,7 @@ import dev.nextftc.hardware.impl.MotorEx;
 
         private UselessMotor() { }
 
-        private MotorEx motor = new MotorEx("Useless Motor");
+        private MotorEx motor = new MotorEx("exp0");
 
         private ControlSystem controlSystem = ControlSystem.builder()
                 .posPid(0.005, 0, 0)

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pedroPathing; // make sure this aligns with class location
+package org.firstinspires.ftc.teamcode.Autonomus; // make sure this aligns with class location
 
 import static java.lang.Thread.sleep;
 
@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.commands.Commands;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.commands.Movement;
+import org.firstinspires.ftc.teamcode.pedroPathing.Cam2;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 
