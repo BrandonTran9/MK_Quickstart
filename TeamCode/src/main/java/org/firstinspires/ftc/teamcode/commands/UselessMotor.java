@@ -18,7 +18,7 @@ import dev.nextftc.hardware.impl.MotorEx;
         private MotorEx motor = new MotorEx("exp0");
 
         private ControlSystem controlSystem = ControlSystem.builder()
-                .posPid(0.005, 0, 0)
+                .posPid(0.0075, 0, 0)
                 .elevatorFF(0)
                 .build();
 

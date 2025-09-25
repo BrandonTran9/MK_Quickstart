@@ -33,14 +33,7 @@ public class Movement {
     }
 
 
-    public void buildPaths() {
-        Path travelGPP = new Path(new BezierLine(startPose, GPPM));
-        travelGPP.setLinearHeadingInterpolation(startPose.getHeading(), GPPM.getHeading());
 
-
-        Path travelCenter = new Path(new BezierLine(startPose, centerField));
-        travelCenter.setLinearHeadingInterpolation(startPose.getHeading(), centerField.getHeading());
-    }
 
 
     public void travelGPP() {

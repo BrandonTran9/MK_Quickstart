@@ -9,8 +9,22 @@ import org.firstinspires.ftc.teamcode.commands.Commands;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.commands.Movement;
+import org.firstinspires.ftc.teamcode.commands.UselessMotor;
+import org.firstinspires.ftc.teamcode.commands.UslelessServo;
 import org.firstinspires.ftc.teamcode.pedroPathing.Cam2;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+
+import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.delays.Delay;
+import dev.nextftc.core.commands.groups.ParallelGroup;
+import dev.nextftc.core.commands.groups.SequentialGroup;
+import dev.nextftc.core.components.SubsystemComponent;
+import dev.nextftc.extensions.pedro.PedroComponent;
+import dev.nextftc.ftc.NextFTCOpMode;
+import dev.nextftc.ftc.components.BulkReadComponent;
+import org.firstinspires.ftc.teamcode.commands.UselessMotor;
+import org.firstinspires.ftc.teamcode.commands.UslelessServo;
 
 
 @Autonomous(name = "Vision Auto", group = "Robot")
@@ -28,12 +42,17 @@ public class VisionAuto extends OpMode {
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState;
 
+
+
     // Enum to represent which of our target AprilTags is currently detected
     enum TargetAprilTag {
         NONE, // No target AprilTag is currently visible
         DGPP, // e.g., Corresponds to Obelisk GPP ID 21
         DPGP, // e.g., Corresponds to Obelisk PGP ID 22
         DPPG, // e.g., Corresponds to Obelisk PPG ID 23
+
+
+
     }
     private TargetAprilTag currentLatchedTarget = TargetAprilTag.NONE;
     private boolean aprilTagDecisionLatched = false; // Flag to indicate if we've made our one-time decision
@@ -157,6 +176,7 @@ public class VisionAuto extends OpMode {
 
                         } else if (currentLatchedTarget == TargetAprilTag.NONE) {
                             servoController.Zero();
+                            }
 
 
 
@@ -172,6 +192,8 @@ public class VisionAuto extends OpMode {
             }
         }
 
+    }
+
 /*
         // Feedback to Driver Hub for debugging
         telemetry.addData("path state", pathState);
@@ -180,7 +202,5 @@ public class VisionAuto extends OpMode {
         telemetry.addData("heading", follower.getPose().getHeading());
         telemetry.update();
 */
-    }
 
 
-}

@@ -24,7 +24,7 @@ public class Commands {
     // Method to initialize the specific servo for this instance
     public void sCommands() {
         if (this.localHardwareMap != null) {
-            servo0 = this.localHardwareMap.get(Servo.class, "servo0");
+            servo0 = this.localHardwareMap.get(Servo.class, "uselessServo");
         } else {
             // Handle error: hardwareMap was not provided
             // You might throw an exception or log an error to telemetry

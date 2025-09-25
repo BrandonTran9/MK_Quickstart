@@ -19,10 +19,5 @@ public class MySubsystemGroup extends SubsystemGroup {
             UselessMotor.INSTANCE.spinLeft
     ).named("action");
 
-    public final Command action1 = new ParallelGroup(
-
-            UslelessServo.INSTANCE.full,
-            UselessMotor.INSTANCE.spinRight
-    );
 }
 
