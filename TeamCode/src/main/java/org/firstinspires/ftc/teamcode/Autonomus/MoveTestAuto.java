@@ -2,9 +2,12 @@ package org.firstinspires.ftc.teamcode.Autonomus;
 
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.Curve;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
+import com.pedropathing.paths.PathBuilder;
 import com.pedropathing.paths.PathChain;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -24,15 +27,20 @@ private int pathState;
    // private final Pose startPose = new Pose(28.5, 128, Math.toRadians(180)); // Start Pose of our robot.
     public final Pose scorePose = new Pose(60, 85, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     public final Pose pickup1Pose = new Pose(37, 121, Math.toRadians(0)); // Highest (First Set) of Artifacts from the Spike Mark.
-    public final Pose startPose = new Pose(97, 8, Math.toRadians(90)); // Robot start pose
+    public final Pose startPose = new Pose(8, 8, Math.toRadians(90)); // Robot start pose
     public final Pose GPPM = new Pose(121, 35, Math.toRadians(90)); // GPPM Obelisk pose/test
-    public final Pose centerField = new Pose(72, 72, Math.toRadians(90)); // Robot start pose
+    public final Pose Curve = new Pose(31, 31, Math.toRadians(90));
+    public final Pose CurveP = new Pose(40,5, Math.toRadians(90));
+
 
 
 
 
     public Path scorePreload;
     public Path travelGPP;
+    public Path CurveT;
+
+
 private PathChain grabPickup1, scorePickup1, grabPickup2, scorePickup2, grabPickup3, scorePickup3;
 
     public void buildPaths() {
@@ -47,15 +55,20 @@ private PathChain grabPickup1, scorePickup1, grabPickup2, scorePickup2, grabPick
     travelGPP = new Path(new BezierLine(startPose, GPPM));
     travelGPP.setLinearHeadingInterpolation(startPose.getHeading(), GPPM.getHeading());
 
+    CurveT = new Path(new BezierCurve(startPose, CurveP, Curve));
+    CurveT.setLinearHeadingInterpolation(startPose.getHeading(),Curve.getHeading());
+
+
     }
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
-                follower.followPath(scorePreload);
+                follower.followPath(CurveT);
                 setPathState(1);
                 break;
             case 1:
-                follower.followPath(travelGPP);
+
+
 
 
         }

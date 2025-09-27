@@ -6,7 +6,12 @@ import com.pedropathing.paths.Path;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 
-public class Movement {
+import dev.nextftc.extensions.pedro.PedroComponent;
+import dev.nextftc.ftc.NextFTCOpMode;
+
+
+
+public class Movement extends NextFTCOpMode {
     public final Pose startPose = new Pose(97, 8, Math.toRadians(90)); // Robot start pose
     private final Pose GPPM = new Pose(121, 35, Math.toRadians(90)); // GPPM Obelisk pose/test
     private final Pose centerField = new Pose(72, 72, Math.toRadians(90)); // Robot start pose
