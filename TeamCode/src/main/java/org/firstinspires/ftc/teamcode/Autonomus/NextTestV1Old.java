@@ -21,7 +21,7 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@Autonomous(name = "NextFTCAuto")
+@Autonomous(name = "NextRandomTest")
 public class NextTestV1Old extends NextFTCOpMode {
     public NextTestV1Old() {
         addComponents(
@@ -31,33 +31,17 @@ public class NextTestV1Old extends NextFTCOpMode {
         );
     }
 
-    private final Pose startPose = new Pose(8, 8, Math.toRadians(90));
-    private final Pose forward = new Pose(32, 8, Math.toRadians(90));
-
-    private PathChain Forward;
-    private Follower follower; // Pedro Pathing follower
 
 
-    public void buildPaths () {
-        Forward = follower.pathBuilder()
-                .addPath(new BezierLine(startPose, forward))
-                .setLinearHeadingInterpolation(startPose.getHeading(), forward.getHeading())
-                .build();
-    }
+
+
 
     public Command secondRoutine() {
         return new SequentialGroup(
                 new ParallelGroup(
-                        new FollowPath(Forward),
+
                         UselessMotor.INSTANCE.spinLeft
-                ),
-                new ParallelGroup(
-                        UselessMotor.INSTANCE.spinRight,
-                        UslelessServo.INSTANCE.full
-                ),
-                new Delay(1),
-                UselessMotor.INSTANCE.spinLeft,
-                UslelessServo.INSTANCE.half
+                )
         );
     }
 
@@ -68,6 +52,11 @@ public class NextTestV1Old extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed() {
         secondRoutine().schedule();
+    }
+
+    @Override
+    public void onStop(){
+        UselessMotor.INSTANCE.Stop().schedule();
     }
 
 }

@@ -56,7 +56,7 @@ import java.util.List;
  * https://ftc-docs.firstinspires.org/apriltag-detection-values
  *
  * To experiment with using AprilTags to navigate, try out these two driving samples:
- * RobotAutoDriveToAprilTagOmni and RobotAutoDriveToAprilTagTank
+ * CVLockOn and RobotAutoDriveToAprilTagTank
  *
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.

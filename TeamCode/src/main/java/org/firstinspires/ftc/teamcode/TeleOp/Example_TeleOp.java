@@ -15,27 +15,25 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import java.util.function.Supplier;
 
+import dev.nextftc.ftc.NextFTCOpMode;
 
 
 @Configurable
 @TeleOp
-public class Example_TeleOp extends OpMode {
+public class Example_TeleOp extends NextFTCOpMode {
     private Follower follower;
     public static Pose startingPose; //See MoveTestAuto to understand how to use this
     private boolean automatedDrive;
     private Supplier<PathChain> pathChain;
-    private TelemetryManager telemetryM;
-    private boolean slowMode = false;
-    private double slowModeMultiplier = 0.5;
+
 
 
 
     @Override
-    public void init() {
+    public void onInit() {
         follower = Constants.createFollower(hardwareMap);
         follower.setStartingPose(startingPose == null ? new Pose() : startingPose);
         follower.update();
-        telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
 
         pathChain = () -> follower.pathBuilder() //Lazy Curve Generation
                 .addPath(new Path(new BezierLine(follower::getPose, new Pose(45, 98))))
@@ -46,7 +44,7 @@ public class Example_TeleOp extends OpMode {
 
 
     @Override
-    public void start() {
+    public void onStartButtonPressed() {
         //The parameter controls whether the Follower should use break mode on the motors (using it is recommended).
         //In order to use float mode, add .useBrakeModeInTeleOp(true); to your Drivetrain Constants in Constant.java (for Mecanum)
         //If you don't pass anything in, it uses the default (false)
@@ -55,35 +53,26 @@ public class Example_TeleOp extends OpMode {
 
 
     @Override
-    public void loop() {
+    public void onUpdate() {
         //Call this once per loop
         follower.update();
-        telemetryM.update();
 
         if (!automatedDrive) {
             //Make the last parameter false for field-centric
             //In case the drivers want to use a "slowMode" you can scale the vectors
 
             //This is the normal version to use in the TeleOp
-            if (!slowMode) follower.setTeleOpDrive(
+            follower.setTeleOpDrive(
                     -gamepad1.left_stick_y,
                     -gamepad1.left_stick_x,
                     -gamepad1.right_stick_x,
                     false // F= Feild Centric   T= Robot Centric
 
             );
-
-                //This is how it looks with slowMode on
-            else follower.setTeleOpDrive(
-                    -gamepad1.left_stick_y * slowModeMultiplier,
-                    -gamepad1.left_stick_x * slowModeMultiplier,
-                    -gamepad1.right_stick_x * slowModeMultiplier,
-                    false // F= Feild Centric   T= Robot Centric
-            );
         }
 
         //Automated PathFollowing
-        if (gamepad1.aWasPressed()) {
+        if (gamepad1.leftBumperWasPressed()) {
             follower.followPath(pathChain.get());
             automatedDrive = false;
         }
@@ -94,24 +83,7 @@ public class Example_TeleOp extends OpMode {
             automatedDrive = false;
         }
 
-        //Slow Mode
-        if (gamepad1.rightBumperWasPressed()) {
-            slowMode = !slowMode;
-        }
 
-        //Optional way to change slow mode strength
-        if (gamepad1.xWasPressed()) {
-            slowModeMultiplier += 0.25;
-        }
-
-        //Optional way to change slow mode strength
-        if (gamepad2.yWasPressed()) {
-            slowModeMultiplier -= 0.25;
-        }
-
-        telemetryM.debug("position", follower.getPose());
-        telemetryM.debug("velocity", follower.getVelocity());
-        telemetryM.debug("automatedDrive", automatedDrive);
 
     }
 }
