@@ -39,11 +39,7 @@ public class CVLockNext extends NextFTCOpMode {
                 );
     }
 
-    DriverControlledCommand driverControlled = new PedroDriverControlled(
-            Gamepads.gamepad1().leftStickY(),
-            Gamepads.gamepad1().leftStickX(),
-            Gamepads.gamepad1().rightStickX()
-    );
+
     private Follower follower;
     private Supplier<PathChain> pathChain;
 
@@ -56,16 +52,29 @@ public class CVLockNext extends NextFTCOpMode {
     }
 
     public void onStartButtonPressed() {
+        DriverControlledCommand driverControlled = new PedroDriverControlled(
+                Gamepads.gamepad1().leftStickY(),
+                Gamepads.gamepad1().leftStickX(),
+                Gamepads.gamepad1().rightStickX()
+        );
 
-    }
-
-    public void onUpdate() {
         driverControlled.schedule();
 
         Gamepads.gamepad1().touchpad()
                 .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft)
                 .whenBecomesFalse(UselessMotor.INSTANCE.spinRight);
-        follower.update();
+
+        driverControlled.run();
+            PedroComponent.follower().startTeleopDrive();
+
+    }
+
+    public void onUpdate() {
+
+    }
+
+    public void onStop() {
+        UselessMotor.INSTANCE.Stop().schedule();
     }
 
 
