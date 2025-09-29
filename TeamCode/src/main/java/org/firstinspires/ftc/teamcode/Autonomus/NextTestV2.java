@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autonomus;
 
+import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -36,7 +37,10 @@ public class NextTestV2 extends NextFTCOpMode {
     }
     Pose startPose =  new Pose(8, 8, Math.toRadians(90));
     Pose shootPose = new Pose(8, 31, Math.toRadians(90));
+    public static Pose autoEndPose = new Pose();
     PathChain forward;
+    private Follower follower;
+
     public void buildPaths(){
         forward = PedroComponent.follower().pathBuilder()
                 .addPath(new BezierLine(startPose, shootPose))
@@ -66,6 +70,11 @@ public class NextTestV2 extends NextFTCOpMode {
     @Override
     public void onStartButtonPressed(){
         run().schedule();
+    }
+
+    public void onStop() {
+        follower.update();
+        NextTestV2.autoEndPose = follower.getPose();
     }
 }
 

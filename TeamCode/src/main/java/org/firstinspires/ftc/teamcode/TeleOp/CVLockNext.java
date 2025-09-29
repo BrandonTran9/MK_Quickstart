@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import static org.firstinspires.ftc.teamcode.TeleOp.Example_TeleOp.startingPose;
-
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.HeadingInterpolator;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,11 +9,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.commands.UselessMotor;
 import org.firstinspires.ftc.teamcode.commands.UslelessServo;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
-import static dev.nextftc.extensions.pedro.PedroComponent.follower;
+
 import com.pedropathing.follower.Follower;
 
 import java.util.function.Supplier;
 
+import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.extensions.pedro.PedroComponent;
@@ -25,6 +23,8 @@ import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 import dev.nextftc.hardware.driving.DriverControlledCommand;
+import static org.firstinspires.ftc.teamcode.Autonomus.NextTestV2.autoEndPose;
+
 
 @TeleOp(name="CVLockNext", group = "Concept")
 public class CVLockNext extends NextFTCOpMode {
@@ -40,13 +40,33 @@ public class CVLockNext extends NextFTCOpMode {
     }
 
 
+        Pose GGPPose = new Pose(120, 35, Math.toRadians(90));
+        Pose PGPPose = new Pose(120, 60, Math.toRadians(90));
+        Pose PPGPose = new Pose(120, 83, Math.toRadians(90));
+        Pose shootPoseC = new Pose(63, 84, Math.toRadians(140));
+       public static final Pose shootPoseF = new Pose(86, 15, Math.toRadians(130));
+
+
     private Follower follower;
     private Supplier<PathChain> pathChain;
+    PathChain GPP;
+    PathChain PGP;
+    PathChain PPG;
+    PathChain ShootC;
+    PathChain ShootF;
+
+    public void buildPaths() {
+   pathChain = () -> follower.pathBuilder()
+           .addPath(new Path(new BezierLine(follower :: getPose, shootPoseF)))
+           .build();
+    }
+
+
 
 
     public void onInit() {
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(startingPose == null ? new Pose() : startingPose);
+        follower.setStartingPose(autoEndPose);
         follower.update();
 
     }
@@ -60,9 +80,11 @@ public class CVLockNext extends NextFTCOpMode {
 
         driverControlled.schedule();
 
-        Gamepads.gamepad1().touchpad()
-                .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft)
-                .whenBecomesFalse(UselessMotor.INSTANCE.spinRight);
+
+
+        Gamepads.gamepad1().triangle()
+                .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft);
+
 
         driverControlled.run();
             PedroComponent.follower().startTeleopDrive();
