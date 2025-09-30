@@ -78,16 +78,16 @@ public class CVLockNext extends NextFTCOpMode {
                 Gamepads.gamepad1().rightStickX()
         );
 
-        driverControlled.schedule();
+       driverControlled.schedule();
 
 
 
-        Gamepads.gamepad1().triangle()
-                .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft);
+        Gamepads.gamepad1().touchpadFinger1Pressed()
+                .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft)
+                        .whenBecomesFalse(UselessMotor.INSTANCE.Stop());
 
 
-        driverControlled.run();
-            PedroComponent.follower().startTeleopDrive();
+
 
     }
 
