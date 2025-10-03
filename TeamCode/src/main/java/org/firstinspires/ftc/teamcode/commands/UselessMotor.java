@@ -18,11 +18,21 @@ public class UselessMotor implements Subsystem {
             .velPid(.0009)
             .build();
 
-    public Command spinLeft = new RunToVelocity(controlSystem, -100000).requires(this);
-    public Command spinRight = new RunToVelocity(controlSystem, 100000).requires(this);
-    public Command Stop(){
-        return new RunToVelocity(controlSystem, 0);
+    public Command spinRight(){
+        return new RunToVelocity(controlSystem, 100000).requires(this);
     }
+
+
+    public Command spinLeft(){
+        return new RunToVelocity(controlSystem, -100000).requires(this);
+    }
+
+
+    public Command Stop(){
+        return new RunToVelocity(controlSystem, 0).requires(this);
+    }
+
+
     @Override
     public void periodic() {
         motor.setPower(controlSystem.calculate(motor.getState()));

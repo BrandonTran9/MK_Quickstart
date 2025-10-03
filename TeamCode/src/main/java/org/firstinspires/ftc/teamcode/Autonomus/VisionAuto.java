@@ -87,16 +87,16 @@ public class VisionAuto extends NextFTCOpMode {
     public Command autonomousRoutineNoTag() {
 
         return new SequentialGroup(
-                UselessMotor.INSTANCE.spinLeft,
-                UselessMotor.INSTANCE.spinRight,
+                UselessMotor.INSTANCE.spinLeft(),
+                UselessMotor.INSTANCE.spinRight(),
 
                 new ParallelGroup(
-                        UselessMotor.INSTANCE.spinLeft,
+                        UselessMotor.INSTANCE.spinLeft(),
                         UslelessServo.INSTANCE.half
                 ),
                 new Delay(1),
                 new ParallelGroup(
-                        UselessMotor.INSTANCE.spinRight,
+                        UselessMotor.INSTANCE.spinRight(),
                         UslelessServo.INSTANCE.full
                 )
         );

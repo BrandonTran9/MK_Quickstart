@@ -51,14 +51,14 @@ public class NextTestV2 extends NextFTCOpMode {
         return new SequentialGroup(
                 new FollowPath(forward),
                 new Delay(.2),
-                UselessMotor.INSTANCE.spinRight
+                UselessMotor.INSTANCE.spinRight()
         );
     }
 
     @Override
     public void onInit(){
         follower().setStartingPose(startPose);
-        UselessMotor.INSTANCE.spinLeft.schedule(); // I would prob put this in onStartbuttonPressed because you dont want it running in Init
+        UselessMotor.INSTANCE.spinLeft().schedule(); // I would prob put this in onStartbuttonPressed because you dont want it running in Init
         buildPaths();
     }
 
@@ -73,7 +73,7 @@ public class NextTestV2 extends NextFTCOpMode {
     }
 
     public void onStop() {
-        NextTestV2.autoEndPose = follower.getPose();
+        autoEndPose = follower.getPose().withHeading(90);
     }
 }
 

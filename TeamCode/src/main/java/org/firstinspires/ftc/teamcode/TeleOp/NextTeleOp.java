@@ -82,7 +82,7 @@ public class NextTeleOp extends NextFTCOpMode {
 
 
         Gamepads.gamepad1().touchpadFinger1Pressed()
-                .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft)
+                .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft())
                         .whenBecomesFalse(UselessMotor.INSTANCE.Stop());
 
 
