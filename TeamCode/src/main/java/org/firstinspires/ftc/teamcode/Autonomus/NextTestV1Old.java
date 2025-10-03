@@ -40,7 +40,7 @@ public class NextTestV1Old extends NextFTCOpMode {
         return new SequentialGroup(
                 new ParallelGroup(
 
-                        UselessMotor.INSTANCE.spinLeft
+                        UselessMotor.INSTANCE.spinLeft()
                 )
         );
     }

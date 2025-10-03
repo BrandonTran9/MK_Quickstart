@@ -14,11 +14,20 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Autonomus.simpleAuto;
+import org.firstinspires.ftc.teamcode.commands.UselessMotor;
+import org.firstinspires.ftc.teamcode.commands.UslelessServo;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import java.util.function.Supplier;
 
+import dev.nextftc.bindings.BindingManager;
+import dev.nextftc.core.components.BindingsComponent;
+import dev.nextftc.core.components.SubsystemComponent;
+import dev.nextftc.extensions.pedro.PedroComponent;
+import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
+import dev.nextftc.ftc.components.BulkReadComponent;
+import static dev.nextftc.bindings.Bindings.*;
 
 
 @Configurable
@@ -31,6 +40,14 @@ public class Example_TeleOp extends NextFTCOpMode {
     private Supplier<PathChain> uhh2;
     private TelemetryManager telemetryM;
 
+    public Example_TeleOp() {
+        addComponents(
+                new SubsystemComponent(UselessMotor.INSTANCE, UslelessServo.INSTANCE),
+                BulkReadComponent.INSTANCE,
+                BindingsComponent.INSTANCE
+
+        );
+    }
 
 
 
@@ -46,6 +63,7 @@ public class Example_TeleOp extends NextFTCOpMode {
                 .addPath(new Path(new BezierLine(follower::getPose, new Pose(0, 0))))
                 .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(90), 0.8))
                 .build();
+
         uhh2 = () -> follower.pathBuilder() //Lazy Curve Generation
                 .addPath(new Path(new BezierLine(follower::getPose, new Pose(10, 10))))
                 .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(90), 0.8))
@@ -55,23 +73,24 @@ public class Example_TeleOp extends NextFTCOpMode {
 
 
     @Override
-    public void onStartButtonPressed() {
+    public void onUpdate() {
         //The parameter controls whether the Follower should use break mode on the motors (using it is recommended).
         //In order to use float mode, add .useBrakeModeInTeleOp(true); to your Drivetrain Constants in Constant.java (for Mecanum)
         //If you don't pass anything in, it uses the default (false)
         follower.startTeleopDrive();
+        BindingManager.update();
+
     }
 
 
     @Override
-    public void onUpdate() {
+    public void onStartButtonPressed() {
         //Call this once per loop
         follower.update();
         telemetryM.update();
 
         if (!automatedDrive) {
             //Make the last parameter false for field-centric
-            //In case the drivers want to use a "slowMode" you can scale the vectors
 
             //This is the normal version to use in the TeleOp
             follower.setTeleOpDrive(
@@ -82,6 +101,7 @@ public class Example_TeleOp extends NextFTCOpMode {
 
             );
         }
+
 
         //Automated PathFollowing
         if (gamepad1.touchpadWasPressed()) {
@@ -105,17 +125,21 @@ public class Example_TeleOp extends NextFTCOpMode {
         }
 
 
-        /*
-        //Stop automated following if the follower is done
-        if (automatedDrive && (gamepad1.leftBumperWasReleased() || !follower.isBusy())) {
-            follower.startTeleopDrive();
-            automatedDrive = false;
-        }
-        */
+        button(() -> gamepad2.right_bumper)
+                .toggleOnBecomesTrue()
+                .whenBecomesTrue(() -> UselessMotor.INSTANCE.spinRight()) // runs every other rising edge, including the first one
+                .whenBecomesFalse(() -> UselessMotor.INSTANCE.spinLeft()); // runs the rest of the rising edges
+
+
         telemetryM.debug("position", follower.getPose());
         telemetryM.debug("velocity", follower.getVelocity());
         telemetryM.debug("automatedDrive", automatedDrive);
 
+
+    }
+
+    public void onStop() {
+        BindingManager.update();
 
     }
 }
