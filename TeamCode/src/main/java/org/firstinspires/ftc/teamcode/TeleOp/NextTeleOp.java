@@ -14,7 +14,6 @@ import com.pedropathing.follower.Follower;
 
 import java.util.function.Supplier;
 
-import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.extensions.pedro.PedroComponent;
@@ -26,10 +25,10 @@ import dev.nextftc.hardware.driving.DriverControlledCommand;
 import static org.firstinspires.ftc.teamcode.Autonomus.NextTestV2.autoEndPose;
 
 
-@TeleOp(name="CVLockNext", group = "Concept")
-public class CVLockNext extends NextFTCOpMode {
+@TeleOp(name="NextTeleOp", group = "Concept")
+public class NextTeleOp extends NextFTCOpMode {
 
-    public CVLockNext() {
+    public NextTeleOp() {
         addComponents(
                 new SubsystemComponent(UselessMotor.INSTANCE, UslelessServo.INSTANCE),
                 BulkReadComponent.INSTANCE,

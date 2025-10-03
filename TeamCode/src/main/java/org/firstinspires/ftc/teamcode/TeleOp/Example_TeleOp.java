@@ -13,17 +13,35 @@ import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Autonomus.NextTestV2;
 import org.firstinspires.ftc.teamcode.Autonomus.simpleAuto;
+import org.firstinspires.ftc.teamcode.commands.UselessMotor;
+import org.firstinspires.ftc.teamcode.commands.UslelessServo;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import java.util.function.Supplier;
 
+import dev.nextftc.core.components.BindingsComponent;
+import dev.nextftc.core.components.SubsystemComponent;
+import dev.nextftc.extensions.pedro.PedroComponent;
+import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
+import dev.nextftc.ftc.components.BulkReadComponent;
 
 
 @Configurable
 @TeleOp
 public class Example_TeleOp extends NextFTCOpMode {
+
+
+    public Example_TeleOp() {
+        addComponents(
+                new SubsystemComponent(UselessMotor.INSTANCE, UslelessServo.INSTANCE),
+                BulkReadComponent.INSTANCE,
+                BindingsComponent.INSTANCE
+
+        );
+    }
     private Follower follower;
     public static Pose startingPose; //See MoveTestAuto to understand how to use this
     private boolean automatedDrive;
@@ -38,13 +56,13 @@ public class Example_TeleOp extends NextFTCOpMode {
     @Override
     public void onInit() {
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(simpleAuto.autoEndPose);
+        follower.setStartingPose(NextTestV2.autoEndPose);
         follower.update();
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
 
         uhh = () -> follower.pathBuilder() //Lazy Curve Generation
                 .addPath(new Path(new BezierLine(follower::getPose, new Pose(0, 0))))
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(90), 0.8))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(0), 0.8))
                 .build();
         uhh2 = () -> follower.pathBuilder() //Lazy Curve Generation
                 .addPath(new Path(new BezierLine(follower::getPose, new Pose(10, 10))))
@@ -86,6 +104,7 @@ public class Example_TeleOp extends NextFTCOpMode {
         //Automated PathFollowing
         if (gamepad1.touchpadWasPressed()) {
             follower.followPath(uhh.get());
+
             automatedDrive = true;
         }
 
@@ -105,17 +124,22 @@ public class Example_TeleOp extends NextFTCOpMode {
         }
 
 
-        /*
-        //Stop automated following if the follower is done
-        if (automatedDrive && (gamepad1.leftBumperWasReleased() || !follower.isBusy())) {
-            follower.startTeleopDrive();
-            automatedDrive = false;
-        }
-        */
+
+
+
+
+
+
+
         telemetryM.debug("position", follower.getPose());
         telemetryM.debug("velocity", follower.getVelocity());
         telemetryM.debug("automatedDrive", automatedDrive);
 
+
+
+    }
+
+    public void onStop() {
 
     }
 }

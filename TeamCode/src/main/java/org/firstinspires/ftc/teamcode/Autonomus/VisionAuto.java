@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.commands.Commands;
 import com.pedropathing.util.Timer;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.commands.Movement;
 import org.firstinspires.ftc.teamcode.commands.UselessMotor;
@@ -25,7 +26,7 @@ import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.ftc.NextFTCOpMode;
 
-
+@Disabled
 @Autonomous(name = "Vision Auto", group = "Robot")
 public class VisionAuto extends NextFTCOpMode {
 

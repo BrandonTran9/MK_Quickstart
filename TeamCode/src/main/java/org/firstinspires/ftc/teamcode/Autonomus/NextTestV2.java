@@ -73,7 +73,7 @@ public class NextTestV2 extends NextFTCOpMode {
     }
 
     public void onStop() {
-        autoEndPose = follower.getPose();
+        NextTestV2.autoEndPose = follower.getPose();
     }
 }
 
