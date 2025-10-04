@@ -6,6 +6,7 @@ import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Autonomus.simpleAuto;
 import org.firstinspires.ftc.teamcode.commands.UselessMotor;
 import org.firstinspires.ftc.teamcode.commands.UslelessServo;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
@@ -39,19 +40,12 @@ public class NextTeleOp extends NextFTCOpMode {
     }
 
 
-        Pose GGPPose = new Pose(120, 35, Math.toRadians(90));
-        Pose PGPPose = new Pose(120, 60, Math.toRadians(90));
-        Pose PPGPose = new Pose(120, 83, Math.toRadians(90));
-        Pose shootPoseC = new Pose(63, 84, Math.toRadians(140));
-       public static final Pose shootPoseF = new Pose(86, 15, Math.toRadians(130));
+
+       public static final Pose shootPoseF = new Pose(8, 10, Math.toRadians(130));
 
 
     private Follower follower;
     private Supplier<PathChain> pathChain;
-    PathChain GPP;
-    PathChain PGP;
-    PathChain PPG;
-    PathChain ShootC;
     PathChain ShootF;
 
     public void buildPaths() {
@@ -65,7 +59,7 @@ public class NextTeleOp extends NextFTCOpMode {
 
     public void onInit() {
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(autoEndPose);
+        follower.setStartingPose(simpleAuto.autoEndPose);
         follower.update();
 
     }
@@ -81,7 +75,7 @@ public class NextTeleOp extends NextFTCOpMode {
 
 
 
-        Gamepads.gamepad1().touchpadFinger1Pressed()
+        Gamepads.gamepad1().triangle()
                 .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft())
                         .whenBecomesFalse(UselessMotor.INSTANCE.Stop());
 

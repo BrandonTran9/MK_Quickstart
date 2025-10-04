@@ -13,6 +13,7 @@ import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Autonomus.NextTestV2;
 import org.firstinspires.ftc.teamcode.Autonomus.simpleAuto;
 import org.firstinspires.ftc.teamcode.commands.UselessMotor;
 import org.firstinspires.ftc.teamcode.commands.UslelessServo;
@@ -34,7 +35,7 @@ import static dev.nextftc.bindings.Bindings.*;
 @TeleOp
 public class Example_TeleOp extends NextFTCOpMode {
     private Follower follower;
-    public static Pose startingPose; //See MoveTestAuto to understand how to use this
+   // public static Pose startingPose; //See MoveTestAuto to understand how to use this
     private boolean automatedDrive;
     private Supplier<PathChain> uhh;
     private Supplier<PathChain> uhh2;
@@ -61,7 +62,7 @@ public class Example_TeleOp extends NextFTCOpMode {
 
         uhh = () -> follower.pathBuilder() //Lazy Curve Generation
                 .addPath(new Path(new BezierLine(follower::getPose, new Pose(0, 0))))
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(90), 0.8))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(0), 0.8))
                 .build();
 
         uhh2 = () -> follower.pathBuilder() //Lazy Curve Generation
@@ -73,18 +74,18 @@ public class Example_TeleOp extends NextFTCOpMode {
 
 
     @Override
-    public void onUpdate() {
-        //The parameter controls whether the Follower should use break mode on the motors (using it is recommended).
-        //In order to use float mode, add .useBrakeModeInTeleOp(true); to your Drivetrain Constants in Constant.java (for Mecanum)
-        //If you don't pass anything in, it uses the default (false)
+    public void onStartButtonPressed() {
+
         follower.startTeleopDrive();
-        BindingManager.update();
+
+
+
 
     }
 
 
     @Override
-    public void onStartButtonPressed() {
+    public void onUpdate() {
         //Call this once per loop
         follower.update();
         telemetryM.update();
@@ -125,10 +126,9 @@ public class Example_TeleOp extends NextFTCOpMode {
         }
 
 
-        button(() -> gamepad2.right_bumper)
-                .toggleOnBecomesTrue()
-                .whenBecomesTrue(() -> UselessMotor.INSTANCE.spinRight()) // runs every other rising edge, including the first one
-                .whenBecomesFalse(() -> UselessMotor.INSTANCE.spinLeft()); // runs the rest of the rising edges
+        Gamepads.gamepad1().triangle()
+                .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft())
+                .whenBecomesFalse(UselessMotor.INSTANCE.Stop());
 
 
         telemetryM.debug("position", follower.getPose());
@@ -139,7 +139,7 @@ public class Example_TeleOp extends NextFTCOpMode {
     }
 
     public void onStop() {
-        BindingManager.update();
+
 
     }
 }

@@ -29,8 +29,8 @@ public class NextTestV2 extends NextFTCOpMode {
                 new PedroComponent(Constants::createFollower),
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE,
-                new SubsystemComponent(UselessMotor.INSTANCE),
-                new SubsystemComponent(UslelessServo.INSTANCE)
+                new SubsystemComponent(UselessMotor.INSTANCE, UslelessServo.INSTANCE)
+
 
 
         );
@@ -58,7 +58,6 @@ public class NextTestV2 extends NextFTCOpMode {
     @Override
     public void onInit(){
         follower().setStartingPose(startPose);
-        UselessMotor.INSTANCE.spinLeft().schedule(); // I would prob put this in onStartbuttonPressed because you dont want it running in Init
         buildPaths();
     }
 
@@ -69,11 +68,13 @@ public class NextTestV2 extends NextFTCOpMode {
 
     @Override
     public void onStartButtonPressed(){
+
         run().schedule();
     }
 
     public void onStop() {
-        autoEndPose = follower.getPose().withHeading(90);
+        UselessMotor.INSTANCE.Stop();
+        NextTestV2.autoEndPose = follower.getPose();
     }
 }
 
