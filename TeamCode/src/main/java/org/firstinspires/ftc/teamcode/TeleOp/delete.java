@@ -44,16 +44,16 @@ public class delete extends NextFTCOpMode {
         driverControlled.schedule();
 
         Gamepads.gamepad2().dpadUp()
-                .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft)
-                .whenBecomesFalse(UselessMotor.INSTANCE.spinRight);
+                .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft())
+                .whenBecomesFalse(UselessMotor.INSTANCE.spinRight());
 
         Gamepads.gamepad2().rightTrigger().greaterThan(0.2)
                 .whenBecomesTrue(
-                        UslelessServo.INSTANCE.half.then(UselessMotor.INSTANCE.spinLeft)
+                        UslelessServo.INSTANCE.half.then(UselessMotor.INSTANCE.spinLeft())
                 );
 
         Gamepads.gamepad2().leftBumper().whenBecomesTrue(
-                UslelessServo.INSTANCE.full.and(UselessMotor.INSTANCE.spinRight)
+                UslelessServo.INSTANCE.full.and(UselessMotor.INSTANCE.spinRight())
         );
     }
 }
