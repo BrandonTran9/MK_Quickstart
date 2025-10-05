@@ -74,9 +74,14 @@ public class Example_TeleOp extends NextFTCOpMode {
 
 
     @Override
-    public void onStartButtonPressed() {
+    public void onUpdate() {
 
         follower.startTeleopDrive();
+
+        Gamepads.gamepad1().triangle()
+                .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft())
+                .whenBecomesFalse(UselessMotor.INSTANCE.Stop());
+
 
 
 
@@ -85,7 +90,7 @@ public class Example_TeleOp extends NextFTCOpMode {
 
 
     @Override
-    public void onUpdate() {
+    public void onStartButtonPressed() {
         //Call this once per loop
         follower.update();
         telemetryM.update();
@@ -126,9 +131,6 @@ public class Example_TeleOp extends NextFTCOpMode {
         }
 
 
-        Gamepads.gamepad1().triangle()
-                .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft())
-                .whenBecomesFalse(UselessMotor.INSTANCE.Stop());
 
 
         telemetryM.debug("position", follower.getPose());
