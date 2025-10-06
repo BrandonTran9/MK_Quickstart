@@ -56,13 +56,13 @@ public class Example_TeleOp extends NextFTCOpMode {
     @Override
     public void onInit() {
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(simpleAuto.autoEndPose);
+        follower.setStartingPose(NextTestV2.autoEndPose);
         follower.update();
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
 
         uhh = () -> follower.pathBuilder() //Lazy Curve Generation
                 .addPath(new Path(new BezierLine(follower::getPose, new Pose(0, 0))))
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(0), 0.8))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(90), 0.8))
                 .build();
 
         uhh2 = () -> follower.pathBuilder() //Lazy Curve Generation
@@ -74,13 +74,14 @@ public class Example_TeleOp extends NextFTCOpMode {
 
 
     @Override
-    public void onUpdate() {
+    public void onStartButtonPressed() {
 
         follower.startTeleopDrive();
 
-        Gamepads.gamepad1().triangle()
-                .whenBecomesTrue(UselessMotor.INSTANCE.spinLeft())
-                .whenBecomesFalse(UselessMotor.INSTANCE.Stop());
+
+        button(() -> gamepad1.triangle)
+                .whenBecomesFalse(UselessMotor.INSTANCE.spinLeft())
+                .whenBecomesTrue(UselessMotor.INSTANCE.Stop());
 
 
 
@@ -90,10 +91,11 @@ public class Example_TeleOp extends NextFTCOpMode {
 
 
     @Override
-    public void onStartButtonPressed() {
+    public void onUpdate() {
         //Call this once per loop
         follower.update();
         telemetryM.update();
+        BindingManager.update();
 
         if (!automatedDrive) {
             //Make the last parameter false for field-centric
@@ -141,6 +143,8 @@ public class Example_TeleOp extends NextFTCOpMode {
     }
 
     public void onStop() {
+        BindingManager.reset();
+        UselessMotor.INSTANCE.Stop().schedule();
 
 
     }

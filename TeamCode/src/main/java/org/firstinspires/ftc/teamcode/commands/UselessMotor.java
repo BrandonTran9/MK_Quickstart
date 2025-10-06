@@ -15,7 +15,7 @@ public class UselessMotor implements Subsystem {
 
 
     private ControlSystem controlSystem = ControlSystem.builder()
-            .velPid(.0009)
+            .velPid(.00025, 0, 0)
             .build();
 
     public Command spinRight(){

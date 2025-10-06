@@ -35,11 +35,11 @@ public class NextTestV2 extends NextFTCOpMode {
 
         );
     }
-    Pose startPose =  new Pose(8, 8, Math.toRadians(90));
-    Pose shootPose = new Pose(8, 31, Math.toRadians(90));
+    Pose startPose =  new Pose(0, 0, Math.toRadians(0));
+    Pose shootPose = new Pose(8, 9, Math.toRadians(90));
     public static Pose autoEndPose = new Pose();
     PathChain forward;
-    private Follower follower;
+    //private Follower follower;
 
     public void buildPaths(){
         forward = PedroComponent.follower().pathBuilder()
@@ -73,8 +73,8 @@ public class NextTestV2 extends NextFTCOpMode {
     }
 
     public void onStop() {
-        UselessMotor.INSTANCE.Stop();
-        NextTestV2.autoEndPose = follower.getPose();
+        UselessMotor.INSTANCE.Stop().schedule();
+        NextTestV2.autoEndPose = follower().getPose();
     }
 }
 
