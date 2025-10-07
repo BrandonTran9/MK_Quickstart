@@ -37,6 +37,5 @@ public class UselessMotor implements Subsystem {
     public void periodic() {
         motor.setPower(controlSystem.calculate(motor.getState()));
 
-
     }
 }

@@ -75,6 +75,7 @@ public class NextTestV2 extends NextFTCOpMode {
     public void onStop() {
         UselessMotor.INSTANCE.Stop().schedule();
         NextTestV2.autoEndPose = follower().getPose();
+
     }
 }
 
