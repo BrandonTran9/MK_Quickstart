@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomus; // make sure this aligns with class location
+package org.firstinspires.ftc.teamcode.ProgBot; // make sure this aligns with class location
 
 import static java.lang.Thread.sleep;
 
@@ -14,9 +14,6 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.commands.Movement;
-import org.firstinspires.ftc.teamcode.commands.UselessMotor;
-import org.firstinspires.ftc.teamcode.commands.UslelessServo;
-import org.firstinspires.ftc.teamcode.pedroPathing.Cam2;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 

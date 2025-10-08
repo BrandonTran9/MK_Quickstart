@@ -1,13 +1,15 @@
-package org.firstinspires.ftc.teamcode.Autonomus;
+package org.firstinspires.ftc.teamcode.CompV1;
 
-import com.pedropathing.follower.Follower;
+import static dev.nextftc.extensions.pedro.PedroComponent.follower;
+
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.commands.UselessMotor;
-import org.firstinspires.ftc.teamcode.commands.UslelessServo;
+import org.firstinspires.ftc.teamcode.ProgBot.NextTestV2;
+import org.firstinspires.ftc.teamcode.ProgBot.UselessMotor;
+import org.firstinspires.ftc.teamcode.ProgBot.UslelessServo;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import dev.nextftc.core.commands.Command;
@@ -19,33 +21,29 @@ import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
-import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 @Autonomous(name = "NextPedro")
-public class NextTestV2 extends NextFTCOpMode {
-
-    public NextTestV2() {
+public class redAuto extends NextFTCOpMode {
+    public redAuto() {
         addComponents(
                 new PedroComponent(Constants::createFollower),
                 BulkReadComponent.INSTANCE,
-                BindingsComponent.INSTANCE,
-                new SubsystemComponent(UselessMotor.INSTANCE, UslelessServo.INSTANCE)
-
-
-
+                BindingsComponent.INSTANCE
+                //new SubsystemComponent(UselessMotor.INSTANCE, UslelessServo.INSTANCE)
         );
     }
-    Pose startPose =  new Pose(0, 0, Math.toRadians(0));
+    Pose startPose =  new Pose(0, 0, Math.toRadians(0));//look at the pedro path generator for a visual rep
     Pose shootPose = new Pose(8, 9, Math.toRadians(90));
     public static Pose autoEndPose = new Pose();
     PathChain forward;
-    //private Follower follower;
 
     public void buildPaths(){
+
         forward = PedroComponent.follower().pathBuilder()
                 .addPath(new BezierLine(startPose, shootPose))
                 .setLinearHeadingInterpolation(startPose.getHeading(), shootPose.getHeading())
                 .build();
+                //adujst this to your created paths
     }
     public Command run() {
         return new SequentialGroup(
@@ -54,7 +52,6 @@ public class NextTestV2 extends NextFTCOpMode {
                 UselessMotor.INSTANCE.spinRight()
         );
     }
-
     @Override
     public void onInit(){
         follower().setStartingPose(startPose);
@@ -74,8 +71,9 @@ public class NextTestV2 extends NextFTCOpMode {
 
     public void onStop() {
         UselessMotor.INSTANCE.Stop().schedule();
-        NextTestV2.autoEndPose = follower().getPose();
+        redAuto.autoEndPose = follower().getPose();
 
     }
-}
 
+
+}

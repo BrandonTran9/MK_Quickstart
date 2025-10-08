@@ -1,7 +1,7 @@
-package org.firstinspires.ftc.teamcode.TeleOp;
-import static org.firstinspires.ftc.teamcode.Autonomus.NextTestV2.autoEndPose;
+package org.firstinspires.ftc.teamcode.CompV1;
 
-import com.bylazar.configurables.annotations.Configurable;
+import static dev.nextftc.bindings.Bindings.button;
+
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.follower.Follower;
@@ -10,69 +10,54 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.HeadingInterpolator;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Autonomus.NextTestV2;
-import org.firstinspires.ftc.teamcode.Autonomus.simpleAuto;
-import org.firstinspires.ftc.teamcode.commands.UselessMotor;
-import org.firstinspires.ftc.teamcode.commands.UslelessServo;
+import org.firstinspires.ftc.teamcode.ProgBot.NextTestV2;
+import org.firstinspires.ftc.teamcode.ProgBot.UselessMotor;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import java.util.function.Supplier;
 
 import dev.nextftc.bindings.BindingManager;
 import dev.nextftc.core.components.BindingsComponent;
-import dev.nextftc.core.components.SubsystemComponent;
-import dev.nextftc.extensions.pedro.PedroComponent;
-import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
-import static dev.nextftc.bindings.Bindings.*;
 
+@TeleOp(name="redTele", group = "Robot")
+public class redTele extends NextFTCOpMode {
 
-@Configurable
-@TeleOp
-public class Example_TeleOp extends NextFTCOpMode {
-    private Follower follower;
-   // public static Pose startingPose; //See MoveTestAuto to understand how to use this
-    private boolean automatedDrive;
-    private Supplier<PathChain> uhh;
-    private Supplier<PathChain> uhh2;
-    private TelemetryManager telemetryM;
-
-    public Example_TeleOp() {
+    public redTele() {
         addComponents(
-                new SubsystemComponent(UselessMotor.INSTANCE, UslelessServo.INSTANCE),
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE
 
         );
     }
 
+    public static final Pose PoseA = new Pose(0, 0, Math.toRadians(0)); //put your desired position and heading here
+
+    private Follower follower;
+    // public static Pose startingPose; //See MoveTestAuto to understand how to use this
+    private boolean automatedDrive;
+    private Supplier<PathChain> Pose1;
+
+    private TelemetryManager telemetryM;
 
 
 
-    @Override
     public void onInit() {
         follower = Constants.createFollower(hardwareMap);
         follower.setStartingPose(NextTestV2.autoEndPose);
         follower.update();
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
 
-        uhh = () -> follower.pathBuilder() //Lazy Curve Generation
+        Pose1 = () -> follower.pathBuilder() //Lazy Curve Generation
                 .addPath(new Path(new BezierLine(follower::getPose, new Pose(0, 0))))
                 .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(90), 0.8))
                 .build();
 
-        uhh2 = () -> follower.pathBuilder() //Lazy Curve Generation
-                .addPath(new Path(new BezierLine(follower::getPose, new Pose(10, 10))))
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(90), 0.8))
-                .build();
+
     }
-
-
-
 
     @Override
     public void onStartButtonPressed() {
@@ -84,14 +69,8 @@ public class Example_TeleOp extends NextFTCOpMode {
                 .whenBecomesFalse(UselessMotor.INSTANCE.spinLeft())
                 .whenBecomesTrue(UselessMotor.INSTANCE.Stop());
 
-
-
-
-
     }
 
-
-    @Override
     public void onUpdate() {
         //Call this once per loop
         follower.update();
@@ -111,42 +90,20 @@ public class Example_TeleOp extends NextFTCOpMode {
             );
         }
 
-
         //Automated PathFollowing
         if (gamepad1.touchpadWasPressed()) {
-            follower.followPath(uhh.get());
+            follower.followPath(Pose1.get());
             automatedDrive = true;
         }
-
-        if (gamepad1.leftBumperWasPressed()) {
-            follower.followPath(uhh2.get());
-            automatedDrive = true;
-        }
-
         if (gamepad1.touchpadWasReleased()) {
             follower.startTeleopDrive();
             automatedDrive = false;
         }
-
-        if (gamepad1.leftBumperWasReleased()) {
-            follower.startTeleopDrive();
-            automatedDrive = false;
-        }
-
-
-
-
-        telemetryM.debug("position", follower.getPose());
-        telemetryM.debug("velocity", follower.getVelocity());
-        telemetryM.debug("automatedDrive", automatedDrive);
-
 
     }
 
     public void onStop() {
         BindingManager.reset();
         UselessMotor.INSTANCE.Stop().schedule();
-
-
     }
 }

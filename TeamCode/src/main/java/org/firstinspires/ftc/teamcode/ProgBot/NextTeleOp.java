@@ -1,4 +1,6 @@
-package org.firstinspires.ftc.teamcode.TeleOp;
+package org.firstinspires.ftc.teamcode.ProgBot;
+
+import static org.firstinspires.ftc.teamcode.pedroPathing.Tuning.follower;
 
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -6,12 +8,7 @@ import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Autonomus.simpleAuto;
-import org.firstinspires.ftc.teamcode.commands.UselessMotor;
-import org.firstinspires.ftc.teamcode.commands.UslelessServo;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
-
-import com.pedropathing.follower.Follower;
 
 import java.util.function.Supplier;
 
@@ -23,7 +20,6 @@ import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 import dev.nextftc.hardware.driving.DriverControlledCommand;
-import static org.firstinspires.ftc.teamcode.Autonomus.NextTestV2.autoEndPose;
 
 
 @TeleOp(name="NextTeleOp", group = "Concept")
@@ -44,7 +40,6 @@ public class NextTeleOp extends NextFTCOpMode {
        public static final Pose shootPoseF = new Pose(8, 10, Math.toRadians(130));
 
 
-    private Follower follower;
     private Supplier<PathChain> pathChain;
     PathChain ShootF;
 
