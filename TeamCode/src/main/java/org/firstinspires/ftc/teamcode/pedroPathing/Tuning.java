@@ -207,6 +207,7 @@ class ForwardTuner extends OpMode {
         telemetryM.update(telemetry);
 
         drawCurrentAndHistory();
+
     }
 }
 
@@ -254,6 +255,7 @@ class LateralTuner extends OpMode {
         telemetryM.update(telemetry);
 
         drawCurrentAndHistory();
+
     }
 }
 
@@ -302,6 +304,7 @@ class TurnTuner extends OpMode {
         telemetryM.update(telemetry);
 
         drawCurrentAndHistory();
+
     }
 }
 
@@ -407,6 +410,7 @@ class ForwardVelocityTuner extends OpMode {
                 changes.add(message);
             }
         }
+
     }
 }
 
@@ -507,6 +511,7 @@ class LateralVelocityTuner extends OpMode {
                 changes.add(message);
             }
         }
+
     }
 }
 
@@ -611,6 +616,7 @@ class ForwardZeroPowerAccelerationTuner extends OpMode {
                 changes.add(message);
             }
         }
+
     }
 }
 
@@ -713,6 +719,7 @@ class LateralZeroPowerAccelerationTuner extends OpMode {
                 changes.add(message);
             }
         }
+
     }
 }
 
@@ -776,6 +783,7 @@ class TranslationalTuner extends OpMode {
 
         telemetryM.debug("Push the robot laterally to test the Translational PIDF(s).");
         telemetryM.update(telemetry);
+
     }
 }
 
@@ -846,6 +854,7 @@ class HeadingTuner extends OpMode {
 
         telemetryM.debug("Turn the robot manually to test the Heading PIDF(s).");
         telemetryM.update(telemetry);
+
     }
 }
 
@@ -923,6 +932,7 @@ class DriveTuner extends OpMode {
 
         telemetryM.debug("Driving forward?: " + forward);
         telemetryM.update(telemetry);
+
     }
 }
 
@@ -985,6 +995,7 @@ class Line extends OpMode {
 
         telemetryM.debug("Driving Forward?: " + forward);
         telemetryM.update(telemetry);
+
     }
 }
 
@@ -1057,6 +1068,7 @@ class CentripetalTuner extends OpMode {
 
         telemetryM.debug("Driving away from the origin along the curve?: " + forward);
         telemetryM.update(telemetry);
+
     }
 }
 
@@ -1088,6 +1100,7 @@ class Triangle extends OpMode {
         if (follower.atParametricEnd()) {
             follower.followPath(triangle, true);
         }
+
     }
 
     @Override
@@ -1174,6 +1187,7 @@ class Circle extends OpMode {
         if (follower.atParametricEnd()) {
             follower.followPath(circle);
         }
+
     }
 }
 

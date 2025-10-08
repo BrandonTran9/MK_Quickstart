@@ -1,19 +1,31 @@
-package org.firstinspires.ftc.teamcode.pedroPathing; // make sure this aligns with class location
+package org.firstinspires.ftc.teamcode.ProgBot; // make sure this aligns with class location
 
 import static java.lang.Thread.sleep;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.Path;
+import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
 import org.firstinspires.ftc.teamcode.commands.Commands;
 import com.pedropathing.util.Timer;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.commands.Movement;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
+import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.delays.Delay;
+import dev.nextftc.core.commands.groups.ParallelGroup;
+import dev.nextftc.core.commands.groups.SequentialGroup;
+import dev.nextftc.ftc.NextFTCOpMode;
 
+@Disabled
 @Autonomous(name = "Vision Auto", group = "Robot")
-public class VisionAuto extends OpMode {
+public class VisionAuto extends NextFTCOpMode {
 
     // DECLARE servoController HERE
     private Commands servoController; // This tells Java that servoController will be an object of type Commands
@@ -26,13 +38,82 @@ public class VisionAuto extends OpMode {
     private Follower follower;
     private Timer pathTimer, actionTimer, opmodeTimer;
     private int pathState;
+    public Path scorePreload;
+    public Path travelGPP;
+    private PathChain grabPickup1;
+    public final Pose scorePose = new Pose(60, 85, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    public final Pose pickup1Pose = new Pose(37, 121, Math.toRadians(0)); // Highest (First Set) of Artifacts from the Spike Mark.
+    public final Pose startPose = new Pose(97, 8, Math.toRadians(90)); // Robot start pose
+    public final Pose GPPM = new Pose(121, 35, Math.toRadians(90)); // GPPM Obelisk pose/test
+
+
+    public void autonomousPathUpdate() {
+        switch (pathState) {
+            case 0:
+                follower.followPath(scorePreload);
+                setPathState(1);
+                break;
+            case 1:
+                follower.followPath(travelGPP);
+
+
+        }
+    }
+    public void setPathState(int pState) {
+        pathState = pState;
+        pathTimer.resetTimer();
+    }
+
+
+    public void buildPaths() {
+        scorePreload = new Path(new BezierLine(startPose, scorePose));
+        scorePreload.setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading());
+
+        grabPickup1 = follower.pathBuilder()
+                .addPath(new BezierLine(scorePose, pickup1Pose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup1Pose.getHeading())
+                .build();
+
+        travelGPP = new Path(new BezierLine(startPose, GPPM));
+        travelGPP.setLinearHeadingInterpolation(startPose.getHeading(), GPPM.getHeading());
+
+    }
+
+
+
+    public Command autonomousRoutineNoTag() {
+
+        return new SequentialGroup(
+                UselessMotor.INSTANCE.spinLeft(),
+                UselessMotor.INSTANCE.spinRight(),
+
+                new ParallelGroup(
+                        UselessMotor.INSTANCE.spinLeft(),
+                        UslelessServo.INSTANCE.half
+                ),
+                new Delay(1),
+                new ParallelGroup(
+                        UselessMotor.INSTANCE.spinRight(),
+                        UslelessServo.INSTANCE.full
+                )
+        );
+    }
+    public Command autonomousRoutinePPG() {
+        return new SequentialGroup(
+
+        );
+    }
+
 
     // Enum to represent which of our target AprilTags is currently detected
     enum TargetAprilTag {
         NONE, // No target AprilTag is currently visible
-        DGPP, // e.g., Corresponds to Obelisk GPP ID 21
-        DPGP, // e.g., Corresponds to Obelisk PGP ID 22
-        DPPG, // e.g., Corresponds to Obelisk PPG ID 23
+        DGPP, // Corresponds to Obelisk GPP ID 21
+        DPGP, // Corresponds to Obelisk PGP ID 22
+        DPPG, // Corresponds to Obelisk PPG ID 23
+
+
+
     }
     private TargetAprilTag currentLatchedTarget = TargetAprilTag.NONE;
     private boolean aprilTagDecisionLatched = false; // Flag to indicate if we've made our one-time decision
@@ -47,7 +128,7 @@ public class VisionAuto extends OpMode {
 
 
     @Override
-    public void init() {
+    public void onInit() {
         telemetry.addData("Status", "Initializing...");
         telemetry.update();
 
@@ -62,6 +143,14 @@ public class VisionAuto extends OpMode {
         currentLatchedTarget = TargetAprilTag.NONE; // Ensure it's reset on init
         aprilTagDecisionLatched = false;
 
+        pathTimer = new Timer();
+        opmodeTimer = new Timer();
+        opmodeTimer.resetTimer();
+        follower = Constants.createFollower(hardwareMap);
+        buildPaths();
+        follower.setStartingPose(startPose);
+
+
         // Initialization code (e.g., hardware mapping)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -72,11 +161,13 @@ public class VisionAuto extends OpMode {
 
 
     @Override
-    public void start() {
+    public void onStartButtonPressed() {
         // This method is called once when the OpMode starts (after INIT, before first loop).
         detectionTimer.reset();          // Start the timeout timer for AprilTag detection
         aprilTagDecisionLatched = false; // Ensure detection logic runs by resetting the main latch
         currentLatchedTarget = TargetAprilTag.NONE; // Reset just in case
+        opmodeTimer.resetTimer();
+        setPathState(0);
     }
 
 
@@ -85,7 +176,7 @@ public class VisionAuto extends OpMode {
 
 
     @Override
-    public void loop() {
+    public void onUpdate() {
 
         // These loop the movements of the robot, these must be called continuously in order to work
         //follower.update();
@@ -130,6 +221,11 @@ public class VisionAuto extends OpMode {
                         telemetry.addData("Detection Timeout", "Defaulting to NONE");
                     }
 
+
+
+
+
+
                     if (decisionMadeThisPass) {
                         aprilTagDecisionLatched = true; // <<<< THIS IS THE KEY ADDITION / CHANGE
                         // Now the outer 'if' condition will fail on next loop
@@ -137,9 +233,6 @@ public class VisionAuto extends OpMode {
                         // Command the servo ONCE based on the decision
                         if (currentLatchedTarget == TargetAprilTag.DGPP) {
                             servoController.GPPT();
-                            movement.travelGPP();
-
-
 
 
 
@@ -156,13 +249,20 @@ public class VisionAuto extends OpMode {
 
                         } else if (currentLatchedTarget == TargetAprilTag.NONE) {
                             servoController.Zero();
+                            follower.update();
+                            autonomousPathUpdate();
+                            autonomousRoutineNoTag().schedule();
+
+
+                            }
+                    }
 
 
 
 
 
 
-                        }
+                }
 
 
 
@@ -170,6 +270,7 @@ public class VisionAuto extends OpMode {
                 }
             }
         }
+
 
 /*
         // Feedback to Driver Hub for debugging
@@ -179,7 +280,5 @@ public class VisionAuto extends OpMode {
         telemetry.addData("heading", follower.getPose().getHeading());
         telemetry.update();
 */
-    }
 
 
-}
