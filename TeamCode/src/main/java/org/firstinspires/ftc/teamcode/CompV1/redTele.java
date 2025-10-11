@@ -20,6 +20,7 @@ import java.util.function.Supplier;
 
 import dev.nextftc.bindings.BindingManager;
 import dev.nextftc.core.components.BindingsComponent;
+import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
@@ -28,18 +29,19 @@ public class redTele extends NextFTCOpMode {
 
     public redTele() {
         addComponents(
+                new SubsystemComponent(Intake.INSTANCE,OutL.INSTANCE,OutR.INSTANCE,RampS.INSTANCE,RampB.INSTANCE),
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE
 
         );
     }
 
-    public static final Pose PoseA = new Pose(0, 0, Math.toRadians(0)); //put your desired position and heading here
+    //public static final Pose ShootP = new Pose(85, 95, Math.toRadians(50)); //put your desired position and heading here
 
     private Follower follower;
     // public static Pose startingPose; //See MoveTestAuto to understand how to use this
     private boolean automatedDrive;
-    private Supplier<PathChain> Pose1;
+    private Supplier<PathChain> Shoot;
 
     private TelemetryManager telemetryM;
 
@@ -51,9 +53,9 @@ public class redTele extends NextFTCOpMode {
         follower.update();
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
 
-        Pose1 = () -> follower.pathBuilder() //Lazy Curve Generation
-                .addPath(new Path(new BezierLine(follower::getPose, new Pose(0, 0))))
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(90), 0.8))
+        Shoot = () -> follower.pathBuilder() //Lazy Curve Generation
+                .addPath(new Path(new BezierLine(follower::getPose, new Pose(85, 95))))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(50), 0.8))
                 .build();
 
 
@@ -64,10 +66,19 @@ public class redTele extends NextFTCOpMode {
 
         follower.startTeleopDrive();
 
+        Intake.INSTANCE.In().schedule();
+        OutL.INSTANCE.Out().schedule();
+        OutR.INSTANCE.Out().schedule();
 
-        button(() -> gamepad1.triangle)
-                .whenBecomesFalse(UselessMotor.INSTANCE.spinLeft())
-                .whenBecomesTrue(UselessMotor.INSTANCE.Stop());
+
+
+        button(() -> gamepad2.y)
+               // .whenBecomesFalse(Intake.INSTANCE.In())
+                .whenBecomesTrue(Intake.INSTANCE.Out());
+
+        button(() -> gamepad2.b)
+                .whenBecomesTrue(RampS.INSTANCE.Go)
+                .whenBecomesFalse(RampS.INSTANCE.Stop);
 
     }
 
@@ -92,7 +103,7 @@ public class redTele extends NextFTCOpMode {
 
         //Automated PathFollowing
         if (gamepad1.touchpadWasPressed()) {
-            follower.followPath(Pose1.get());
+            follower.followPath(Shoot.get());
             automatedDrive = true;
         }
         if (gamepad1.touchpadWasReleased()) {
@@ -104,6 +115,8 @@ public class redTele extends NextFTCOpMode {
 
     public void onStop() {
         BindingManager.reset();
-        UselessMotor.INSTANCE.Stop().schedule();
+        Intake.INSTANCE.Stop().schedule();
+        OutL.INSTANCE.Stop().schedule();
+        OutR.INSTANCE.Stop().schedule();
     }
 }

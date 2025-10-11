@@ -22,7 +22,7 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@Autonomous(name = "NextPedro")
+@Autonomous(name = "RedAuto")
 public class redAuto extends NextFTCOpMode {
     public redAuto() {
         addComponents(
