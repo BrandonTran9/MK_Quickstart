@@ -5,12 +5,12 @@ import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.impl.CRServoEx;
 import dev.nextftc.hardware.powerable.SetPower;
 
-public class RampB implements Subsystem {
-    public static final RampB INSTANCE = new RampB();
-    private RampB() { }
-    private CRServoEx servo = new CRServoEx("rampB");
+public class RampW2 implements Subsystem {
+    public static final RampW2 INSTANCE = new RampW2();
+    private RampW2() { }
+    private CRServoEx servo = new CRServoEx("rampW2");
     public Command Go = new SetPower(servo, 1).requires(this);
-    public Command Stop = new SetPower(servo, 1).requires(this);
+    public Command no = new SetPower(servo, 0).requires(this);
 
 
 

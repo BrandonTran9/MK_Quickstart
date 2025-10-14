@@ -13,7 +13,6 @@ import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.ProgBot.NextTestV2;
-import org.firstinspires.ftc.teamcode.ProgBot.UselessMotor;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import java.util.function.Supplier;
@@ -29,7 +28,7 @@ public class redTele extends NextFTCOpMode {
 
     public redTele() {
         addComponents(
-                new SubsystemComponent(Intake.INSTANCE,OutL.INSTANCE,OutR.INSTANCE,RampS.INSTANCE,RampB.INSTANCE),
+                new SubsystemComponent(Intake.INSTANCE,OutL.INSTANCE,OutR.INSTANCE,RampS.INSTANCE, RampW1.INSTANCE),
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE
 
@@ -69,16 +68,19 @@ public class redTele extends NextFTCOpMode {
         Intake.INSTANCE.In().schedule();
         OutL.INSTANCE.Out().schedule();
         OutR.INSTANCE.Out().schedule();
+        RampW1.INSTANCE.no.schedule();
+        RampW2.INSTANCE.no.schedule();
 
 
 
         button(() -> gamepad2.y)
-               // .whenBecomesFalse(Intake.INSTANCE.In())
                 .whenBecomesTrue(Intake.INSTANCE.Out());
 
         button(() -> gamepad2.b)
                 .whenBecomesTrue(RampS.INSTANCE.Go)
-                .whenBecomesFalse(RampS.INSTANCE.Stop);
+                .whenBecomesTrue(RampW1.INSTANCE.Go)
+                .whenBecomesTrue(RampW2.INSTANCE.Go);
+
 
     }
 
