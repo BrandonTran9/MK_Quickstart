@@ -28,7 +28,8 @@ public class redTele extends NextFTCOpMode {
 
     public redTele() {
         addComponents(
-                new SubsystemComponent(Intake.INSTANCE,OutL.INSTANCE,OutR.INSTANCE,RampS.INSTANCE, RampW1.INSTANCE),
+                new SubsystemComponent(Intake.INSTANCE,OutL.INSTANCE,OutR.INSTANCE,
+                        RampS.INSTANCE, RampW1.INSTANCE, rampAdj.INSTANCE),
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE
 
