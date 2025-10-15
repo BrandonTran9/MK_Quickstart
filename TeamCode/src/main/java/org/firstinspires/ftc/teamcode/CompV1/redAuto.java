@@ -148,6 +148,9 @@ public class redAuto extends NextFTCOpMode {
     }
 
     public void onStop() {
+        Intake.INSTANCE.Stop().schedule();
+        OutL.INSTANCE.Stop().schedule();
+        OutR.INSTANCE.Stop().schedule();
         redAuto.autoEndPose = follower().getPose();
 
     }
