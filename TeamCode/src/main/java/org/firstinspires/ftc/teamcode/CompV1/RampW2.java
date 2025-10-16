@@ -9,7 +9,7 @@ public class RampW2 implements Subsystem {
     public static final RampW2 INSTANCE = new RampW2();
     private RampW2() { }
     private CRServoEx servo = new CRServoEx("rampW2");
-    public Command Go = new SetPower(servo, 1).requires(this);
+    public Command Go = new SetPower(servo, -1).requires(this);
     public Command no = new SetPower(servo, 0).requires(this);
 
 

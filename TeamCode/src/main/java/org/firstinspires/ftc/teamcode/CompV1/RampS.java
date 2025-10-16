@@ -14,7 +14,7 @@ public class RampS implements Subsystem {
 
     private CRServoEx servo = new CRServoEx("RampS");
 
-    public Command Go = new SetPower(servo, 1).requires(this);
+    public Command Go = new SetPower(servo, -1).requires(this);
     public Command no = new SetPower(servo, 0).requires(this);
 
 }

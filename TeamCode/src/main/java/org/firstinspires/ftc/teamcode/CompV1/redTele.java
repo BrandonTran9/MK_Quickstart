@@ -75,12 +75,16 @@ public class redTele extends NextFTCOpMode {
 
 
         button(() -> gamepad2.y)
-                .whenBecomesTrue(Intake.INSTANCE.Out());
+                .whenBecomesTrue(Intake.INSTANCE.Out())
+                        .whenBecomesFalse(Intake.INSTANCE.In());
 
         button(() -> gamepad2.b)
                 .whenBecomesTrue(RampS.INSTANCE.Go)
                 .whenBecomesTrue(RampW1.INSTANCE.Go)
-                .whenBecomesTrue(RampW2.INSTANCE.Go);
+                .whenBecomesTrue(RampW2.INSTANCE.Go)
+                .whenBecomesFalse(RampS.INSTANCE.no)
+                .whenBecomesFalse(RampW1.INSTANCE.no)
+                .whenBecomesFalse(RampW2.INSTANCE.no);
 
 
     }

@@ -93,8 +93,8 @@ public class redAuto extends NextFTCOpMode {
         return new SequentialGroup(
                 new FollowPath(StartToShoot),
                 OutL.INSTANCE.Out(),
-                OutR.INSTANCE.Out()
-        );
+                OutR.INSTANCE.Out(),
+
                 new SequentialGroup(
                 Intake.INSTANCE.In(),
                 RampW1.INSTANCE.Go,
@@ -107,7 +107,7 @@ public class redAuto extends NextFTCOpMode {
                 new FollowPath(PickupGPP, true, 0.5),
                 new Delay(.25),
                 new FollowPath(GPPToShoot)
-                );
+                ),
 
                 new SequentialGroup(
                 RampW2.INSTANCE.Go,
@@ -119,11 +119,12 @@ public class redAuto extends NextFTCOpMode {
                 new FollowPath(PickupPGP, true, 0.5),
                 new Delay(.25),
                 new FollowPath(PGPToShoot)
-                );
+                ),
                 new SequentialGroup(
                 RampW2.INSTANCE.Go,
                 RampS.INSTANCE.Go,
                 new Delay(3)
+                )
 
 
         );
