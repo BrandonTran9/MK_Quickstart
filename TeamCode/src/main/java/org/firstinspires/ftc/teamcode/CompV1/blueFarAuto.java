@@ -20,9 +20,9 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@Autonomous(name = "RedAuto")
-public class redAuto extends NextFTCOpMode {
-    public redAuto() {
+@Autonomous(name = "blueFar")
+public class blueFarAuto extends NextFTCOpMode {
+    public blueFarAuto() {
         addComponents(
                 new PedroComponent(Constants::createFollower),
                 BulkReadComponent.INSTANCE,
@@ -31,14 +31,14 @@ public class redAuto extends NextFTCOpMode {
                         RampS.INSTANCE, RampW1.INSTANCE, RampW2.INSTANCE, rampAdj.INSTANCE)
         );
     }
-    Pose startPose =  new Pose(56.5, 135, Math.toRadians(0));//look at the pedro path generator for a visual rep
-    Pose shootPose = new Pose(60, 93, Math.toRadians(215));
-    Pose GPPpose = new Pose(40, 84, Math.toRadians(180));
-    Pose GPPposeC = new Pose(56, 83.5);
-    Pose GPPf = new Pose(20, 84, Math.toRadians(180));
-    Pose PGPpose = new Pose(40, 60, Math.toRadians(180));
-    Pose PGPposeC= new Pose(61.75, 62);
-    Pose PGPf = new Pose(20, 60, Math.toRadians(180));
+    Pose startPose =  new Pose(57, 9, Math.toRadians(180)).mirror();//look at the pedro path generator for a visual rep
+    Pose shootPose = new Pose(60, 17, Math.toRadians(225)).mirror();
+    Pose PPGpose = new Pose(40, 35, Math.toRadians(180)).mirror();
+    Pose PPGposeC = new Pose(60, 35).mirror();
+    Pose PPGf = new Pose(20, 35, Math.toRadians(180)).mirror();
+    Pose PGPpose = new Pose(40, 60, Math.toRadians(180)).mirror();
+    Pose PGPposeC= new Pose(57, 52).mirror();
+    Pose PGPf = new Pose(20, 60, Math.toRadians(180)).mirror();
 
     public static Pose autoEndPose = new Pose();
     PathChain StartToShoot;
@@ -58,18 +58,18 @@ public class redAuto extends NextFTCOpMode {
                 .build();
 
         ShootToGPP = PedroComponent.follower().pathBuilder()
-                .addPath(new BezierCurve(shootPose, GPPpose, GPPposeC))
-                .setLinearHeadingInterpolation(shootPose.getHeading(), GPPpose.getHeading())
+                .addPath(new BezierCurve(shootPose, PPGpose, PPGposeC))
+                .setLinearHeadingInterpolation(shootPose.getHeading(), PPGpose.getHeading())
                 .build();
 
         PickupGPP = PedroComponent.follower().pathBuilder()
-                .addPath(new BezierLine(GPPposeC, GPPf))
-                .setLinearHeadingInterpolation(GPPposeC.getHeading(), GPPf.getHeading())
+                .addPath(new BezierLine(PPGposeC, PPGf))
+                .setLinearHeadingInterpolation(PPGposeC.getHeading(), PPGf.getHeading())
                 .build();
 
         GPPToShoot = PedroComponent.follower().pathBuilder()
-                .addPath(new BezierLine(GPPf, shootPose))
-                .setLinearHeadingInterpolation(GPPf.getHeading(), shootPose.getHeading())
+                .addPath(new BezierLine(PPGf, shootPose))
+                .setLinearHeadingInterpolation(PPGf.getHeading(), shootPose.getHeading())
                 .build();
 
         ShootToPGP = PedroComponent.follower().pathBuilder()
@@ -96,34 +96,34 @@ public class redAuto extends NextFTCOpMode {
                 OutR.INSTANCE.Out(),
 
                 new SequentialGroup(
-                Intake.INSTANCE.In(),
-                RampW1.INSTANCE.Go,
-                RampW2.INSTANCE.Go,
-                RampS.INSTANCE.Go,
-                new Delay(5),
-                RampW2.INSTANCE.no,
-                RampS.INSTANCE.no,
-                new FollowPath(ShootToGPP),
-                new FollowPath(PickupGPP, true, 0.5),
-                new Delay(.25),
-                new FollowPath(GPPToShoot)
+                        Intake.INSTANCE.In(),
+                        RampW1.INSTANCE.Go,
+                        RampW2.INSTANCE.Go,
+                        RampS.INSTANCE.Go,
+                        new Delay(5),
+                        RampW2.INSTANCE.no,
+                        RampS.INSTANCE.no,
+                        new FollowPath(ShootToGPP),
+                        new FollowPath(PickupGPP, true, 0.5),
+                        new Delay(.25),
+                        new FollowPath(GPPToShoot)
                 ),
 
                 new SequentialGroup(
-                RampW2.INSTANCE.Go,
-                RampS.INSTANCE.Go,
-                new Delay(3),
-                RampW2.INSTANCE.no,
-                RampS.INSTANCE.no,
-                new FollowPath(ShootToPGP),
-                new FollowPath(PickupPGP, true, 0.5),
-                new Delay(.25),
-                new FollowPath(PGPToShoot)
+                        RampW2.INSTANCE.Go,
+                        RampS.INSTANCE.Go,
+                        new Delay(3),
+                        RampW2.INSTANCE.no,
+                        RampS.INSTANCE.no,
+                        new FollowPath(ShootToPGP),
+                        new FollowPath(PickupPGP, true, 0.5),
+                        new Delay(.25),
+                        new FollowPath(PGPToShoot)
                 ),
                 new SequentialGroup(
-                RampW2.INSTANCE.Go,
-                RampS.INSTANCE.Go,
-                new Delay(3)
+                        RampW2.INSTANCE.Go,
+                        RampS.INSTANCE.Go,
+                        new Delay(3)
                 )
 
 
@@ -152,7 +152,7 @@ public class redAuto extends NextFTCOpMode {
         Intake.INSTANCE.Stop().schedule();
         OutL.INSTANCE.Stop().schedule();
         OutR.INSTANCE.Stop().schedule();
-        redAuto.autoEndPose = follower().getPose();
+        blueFarAuto.autoEndPose = follower().getPose();
 
     }
 

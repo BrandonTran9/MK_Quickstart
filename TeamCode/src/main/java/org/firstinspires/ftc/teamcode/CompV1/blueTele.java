@@ -23,10 +23,10 @@ import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@TeleOp(name="redTele", group = "Robot")
-public class redTele extends NextFTCOpMode {
+@TeleOp(name="blueTele", group = "Robot")
+public class blueTele extends NextFTCOpMode {
 
-    public redTele() {
+    public blueTele() {
         addComponents(
                 new SubsystemComponent(Intake.INSTANCE,OutL.INSTANCE,OutR.INSTANCE,
                         RampS.INSTANCE, RampW1.INSTANCE, rampAdj.INSTANCE),
@@ -36,10 +36,10 @@ public class redTele extends NextFTCOpMode {
         );
     }
 
-    //public static final Pose ShootP = new Pose(85, 95, Math.toRadians(50)); //put your desired position and heading here
+    //public static final Pose ShootP = new Pose(60, 17, Math.toRadians(225)).mirror();
 
     private Follower follower;
-    // public static Pose startingPose; //See MoveTestAuto to understand how to use this
+    //public static Pose startingPose; //See MoveTestAuto to understand how to use this
     private boolean automatedDrive;
     private Supplier<PathChain> Shoot;
 
@@ -49,13 +49,13 @@ public class redTele extends NextFTCOpMode {
 
     public void onInit() {
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(redFarAuto.autoEndPose);
+        follower.setStartingPose(blueFarAuto.autoEndPose);
         follower.update();
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
 
         Shoot = () -> follower.pathBuilder() //Lazy Curve Generation
-                .addPath(new Path(new BezierLine(follower::getPose, new Pose(85, 95))))
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(50), 0.8))
+                .addPath(new Path(new BezierLine(follower::getPose, new Pose(85, 17))))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(305), 0.8))
                 .build();
 
 
@@ -76,7 +76,7 @@ public class redTele extends NextFTCOpMode {
 
         button(() -> gamepad2.y)
                 .whenBecomesTrue(Intake.INSTANCE.Out())
-                        .whenBecomesFalse(Intake.INSTANCE.In());
+                .whenBecomesFalse(Intake.INSTANCE.In());
 
         button(() -> gamepad2.b)
                 .whenBecomesTrue(RampS.INSTANCE.Go)
