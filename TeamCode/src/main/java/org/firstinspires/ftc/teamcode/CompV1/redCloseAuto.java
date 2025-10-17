@@ -92,12 +92,12 @@ public class redCloseAuto extends NextFTCOpMode {
     }
     public Command run() {
         return new SequentialGroup(
-                OutL.INSTANCE.Out(),
-                OutR.INSTANCE.Out(),
+
 
                 new ParallelGroup(
                 new FollowPath(StartToShoot),
-                OutR.INSTANCE.Out()
+                OutR.INSTANCE.Out().endAfter(5),
+                OutL.INSTANCE.Out().endAfter(5)
                 ),
                 new SequentialGroup(
                 Intake.INSTANCE.In(),
