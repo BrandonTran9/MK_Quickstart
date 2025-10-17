@@ -19,7 +19,7 @@ public class OutR implements Subsystem {
             .build();
 
     public Command Out (){
-        return new RunToVelocity(controlSystem, 100000).requires(this);
+        return new RunToVelocity(controlSystem, -100000).requires(this);
     }
 
 

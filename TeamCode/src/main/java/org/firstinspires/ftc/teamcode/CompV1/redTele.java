@@ -67,8 +67,8 @@ public class redTele extends NextFTCOpMode {
         follower.startTeleopDrive();
 
         Intake.INSTANCE.In().schedule();
-        OutL.INSTANCE.Out().schedule();
-        OutR.INSTANCE.Out().schedule();
+        OutL.INSTANCE.Stop().schedule();
+        OutR.INSTANCE.Stop().schedule();
         RampW1.INSTANCE.no.schedule();
         RampW2.INSTANCE.no.schedule();
 
@@ -85,6 +85,24 @@ public class redTele extends NextFTCOpMode {
                 .whenBecomesFalse(RampS.INSTANCE.no)
                 .whenBecomesFalse(RampW1.INSTANCE.no)
                 .whenBecomesFalse(RampW2.INSTANCE.no);
+
+        button(() -> gamepad2.a)
+                .whenBecomesTrue(OutL.INSTANCE.Out())
+                        .whenBecomesTrue(OutR.INSTANCE.Out())
+                                .whenBecomesFalse(OutL.INSTANCE.Stop())
+                                        .whenBecomesFalse(OutR.INSTANCE.Stop());
+
+        button(() -> gamepad2.dpad_up)
+                .whenBecomesTrue(rampAdj.INSTANCE.up);
+        button(() -> gamepad2.dpad_left)
+                .whenBecomesTrue(rampAdj.INSTANCE.half);
+        button(() -> gamepad2.dpad_down)
+                .whenBecomesTrue(rampAdj.INSTANCE.flat);
+
+        button(() -> gamepad2.x)
+                .whenBecomesTrue(Intake.INSTANCE.Stop())
+                .whenBecomesFalse(Intake.INSTANCE.In());
+
 
 
     }
