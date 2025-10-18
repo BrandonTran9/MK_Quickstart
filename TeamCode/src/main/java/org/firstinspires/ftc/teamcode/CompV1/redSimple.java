@@ -11,9 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import dev.nextftc.core.commands.Command;
-import dev.nextftc.core.commands.CommandManager;
 import dev.nextftc.core.commands.delays.Delay;
-import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
@@ -22,9 +20,9 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-@Autonomous(name = "RedClose")
-public class redCloseAuto extends NextFTCOpMode {
-    public redCloseAuto() {
+@Autonomous(name = "redSimple")
+public class redSimple extends NextFTCOpMode {
+    public redSimple() {
         addComponents(
                 new PedroComponent(Constants::createFollower),
                 BulkReadComponent.INSTANCE,
@@ -33,14 +31,15 @@ public class redCloseAuto extends NextFTCOpMode {
                         RampS.INSTANCE, RampW1.INSTANCE, RampW2.INSTANCE, rampAdj.INSTANCE)
         );
     }
-    Pose startPose =  new Pose(56.5, 135, Math.toRadians(0));//look at the pedro path generator for a visual rep
-    Pose shootPose = new Pose(60, 93, Math.toRadians(215));
-    Pose GPPpose = new Pose(40, 84, Math.toRadians(180));
-    Pose GPPposeC = new Pose(56, 83.5);
-    Pose GPPf = new Pose(20, 84, Math.toRadians(180));
+    Pose startPose =  new Pose(57, 9, Math.toRadians(180)).mirror();//look at the pedro path generator for a visual rep
+    Pose shootPose = new Pose(60, 17, Math.toRadians(225));
+    Pose PPGpose = new Pose(40, 35, Math.toRadians(180));
+    Pose PPGposeC = new Pose(60, 35);
+    Pose PPGf = new Pose(20, 35, Math.toRadians(180));
     Pose PGPpose = new Pose(40, 60, Math.toRadians(180));
-    Pose PGPposeC= new Pose(61.75, 62);
+    Pose PGPposeC= new Pose(57, 52);
     Pose PGPf = new Pose(20, 60, Math.toRadians(180));
+    Pose strafeRight = new Pose(57,40, Math.toRadians(180)).mirror();
 
     public static Pose autoEndPose = new Pose();
     PathChain StartToShoot;
@@ -50,6 +49,7 @@ public class redCloseAuto extends NextFTCOpMode {
     PathChain ShootToPGP;
     PathChain PickupPGP;
     PathChain PGPToShoot;
+    PathChain StrafeL;
 
 
     public void buildPaths(){
@@ -60,18 +60,18 @@ public class redCloseAuto extends NextFTCOpMode {
                 .build();
 
         ShootToGPP = PedroComponent.follower().pathBuilder()
-                .addPath(new BezierCurve(shootPose, GPPpose, GPPposeC))
-                .setLinearHeadingInterpolation(shootPose.getHeading(), GPPpose.getHeading())
+                .addPath(new BezierCurve(shootPose, PPGpose, PPGposeC))
+                .setLinearHeadingInterpolation(shootPose.getHeading(), PPGpose.getHeading())
                 .build();
 
         PickupGPP = PedroComponent.follower().pathBuilder()
-                .addPath(new BezierLine(GPPposeC, GPPf))
-                .setLinearHeadingInterpolation(GPPposeC.getHeading(), GPPf.getHeading())
+                .addPath(new BezierLine(PPGposeC, PPGf))
+                .setLinearHeadingInterpolation(PPGposeC.getHeading(), PPGf.getHeading())
                 .build();
 
         GPPToShoot = PedroComponent.follower().pathBuilder()
-                .addPath(new BezierLine(GPPf, shootPose))
-                .setLinearHeadingInterpolation(GPPf.getHeading(), shootPose.getHeading())
+                .addPath(new BezierLine(PPGf, shootPose))
+                .setLinearHeadingInterpolation(PPGf.getHeading(), shootPose.getHeading())
                 .build();
 
         ShootToPGP = PedroComponent.follower().pathBuilder()
@@ -89,47 +89,24 @@ public class redCloseAuto extends NextFTCOpMode {
                 .setLinearHeadingInterpolation(PGPf.getHeading(), shootPose.getHeading())
                 .build();
 
+        StrafeL = PedroComponent.follower().pathBuilder()
+                .addPath(new BezierLine(startPose, strafeRight))
+                .setLinearHeadingInterpolation(startPose.getHeading(), strafeRight.getHeading())
+                .build();
+
 
     }
     public Command run() {
-         return new SequentialGroup(
+        return new SequentialGroup(
+                new FollowPath(StrafeL)
 
-                new ParallelGroup(
-                new FollowPath(StartToShoot),
-                OutR.INSTANCE.Out().endAfter(2),
-                OutL.INSTANCE.Out().endAfter(2)
-                ),
-                new SequentialGroup(
-                Intake.INSTANCE.In(),
-                RampW1.INSTANCE.Go,
-                RampW2.INSTANCE.Go,
-                RampS.INSTANCE.Go,
-                new Delay(5),
-                RampW2.INSTANCE.no,
-                RampS.INSTANCE.no,
-                new FollowPath(ShootToGPP),
-                new FollowPath(PickupGPP, true, 0.5),
-                new Delay(.25),
-                new FollowPath(GPPToShoot)
-                ),
 
-                new SequentialGroup(
-                RampW2.INSTANCE.Go,
-                RampS.INSTANCE.Go,
-                new Delay(3),
-                RampW2.INSTANCE.no,
-                RampS.INSTANCE.no,
-                new FollowPath(ShootToPGP),
-                new FollowPath(PickupPGP, true, 0.5),
-                new Delay(.25),
-                new FollowPath(PGPToShoot)
-                ),
-                new SequentialGroup(
-                RampW2.INSTANCE.Go,
-                RampS.INSTANCE.Go,
-                new Delay(3)
-                )
+
+
+
         );
+
+
     }
     @Override
     public void onInit(){
@@ -148,19 +125,11 @@ public class redCloseAuto extends NextFTCOpMode {
         run().schedule();
     }
 
-    public void onUpdate(){
-        CommandManager.INSTANCE.snapshot();
-
-        telemetry.addData("Commands", CommandManager.INSTANCE.snapshot());
-        telemetry.update();
-
-    }
-
     public void onStop() {
         Intake.INSTANCE.Stop().schedule();
         OutL.INSTANCE.Stop().schedule();
         OutR.INSTANCE.Stop().schedule();
-        redCloseAuto.autoEndPose = follower().getPose();
+        redSimple.autoEndPose = follower().getPose();
 
     }
 

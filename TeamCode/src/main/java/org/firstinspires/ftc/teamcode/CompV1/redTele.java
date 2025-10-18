@@ -49,7 +49,7 @@ public class redTele extends NextFTCOpMode {
 
     public void onInit() {
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(redFarAuto.autoEndPose);
+        follower.setStartingPose(blueFarAuto.autoEndPose);
         follower.update();
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
 

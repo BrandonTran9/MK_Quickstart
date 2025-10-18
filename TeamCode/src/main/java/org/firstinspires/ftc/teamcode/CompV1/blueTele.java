@@ -36,10 +36,10 @@ public class blueTele extends NextFTCOpMode {
         );
     }
 
-    //public static final Pose ShootP = new Pose(60, 17, Math.toRadians(225)).mirror();
+    //public static final Pose ShootP = new Pose(85, 95, Math.toRadians(50)); //put your desired position and heading here
 
     private Follower follower;
-    //public static Pose startingPose; //See MoveTestAuto to understand how to use this
+    // public static Pose startingPose; //See MoveTestAuto to understand how to use this
     private boolean automatedDrive;
     private Supplier<PathChain> Shoot;
 
@@ -49,13 +49,13 @@ public class blueTele extends NextFTCOpMode {
 
     public void onInit() {
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(blueFarAuto.autoEndPose);
+        follower.setStartingPose(blueSimple.autoEndPose);
         follower.update();
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
 
         Shoot = () -> follower.pathBuilder() //Lazy Curve Generation
-                .addPath(new Path(new BezierLine(follower::getPose, new Pose(85, 17))))
-                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(305), 0.8))
+                .addPath(new Path(new BezierLine(follower::getPose, new Pose(85, 95))))
+                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(50), 0.8))
                 .build();
 
 
@@ -67,8 +67,8 @@ public class blueTele extends NextFTCOpMode {
         follower.startTeleopDrive();
 
         Intake.INSTANCE.In().schedule();
-        OutL.INSTANCE.Out().schedule();
-        OutR.INSTANCE.Out().schedule();
+        OutL.INSTANCE.Stop().schedule();
+        OutR.INSTANCE.Stop().schedule();
         RampW1.INSTANCE.no.schedule();
         RampW2.INSTANCE.no.schedule();
 
@@ -85,6 +85,24 @@ public class blueTele extends NextFTCOpMode {
                 .whenBecomesFalse(RampS.INSTANCE.no)
                 .whenBecomesFalse(RampW1.INSTANCE.no)
                 .whenBecomesFalse(RampW2.INSTANCE.no);
+
+        button(() -> gamepad2.a)
+                .whenBecomesTrue(OutL.INSTANCE.Out())
+                .whenBecomesTrue(OutR.INSTANCE.Out())
+                .whenBecomesFalse(OutL.INSTANCE.Stop())
+                .whenBecomesFalse(OutR.INSTANCE.Stop());
+
+        button(() -> gamepad2.dpad_up)
+                .whenBecomesTrue(rampAdj.INSTANCE.up);
+        button(() -> gamepad2.dpad_left)
+                .whenBecomesTrue(rampAdj.INSTANCE.half);
+        button(() -> gamepad2.dpad_down)
+                .whenBecomesTrue(rampAdj.INSTANCE.flat);
+
+        button(() -> gamepad2.x)
+                .whenBecomesTrue(Intake.INSTANCE.Stop())
+                .whenBecomesFalse(Intake.INSTANCE.In());
+
 
 
     }
