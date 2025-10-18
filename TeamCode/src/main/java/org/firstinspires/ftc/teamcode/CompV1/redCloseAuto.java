@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.CommandManager;
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
@@ -91,13 +92,12 @@ public class redCloseAuto extends NextFTCOpMode {
 
     }
     public Command run() {
-        return new SequentialGroup(
-
+         return new SequentialGroup(
 
                 new ParallelGroup(
                 new FollowPath(StartToShoot),
-                OutR.INSTANCE.Out().endAfter(5),
-                OutL.INSTANCE.Out().endAfter(5)
+                OutR.INSTANCE.Out(),
+                OutL.INSTANCE.Out()
                 ),
                 new SequentialGroup(
                 Intake.INSTANCE.In(),
@@ -129,11 +129,7 @@ public class redCloseAuto extends NextFTCOpMode {
                 RampS.INSTANCE.Go,
                 new Delay(3)
                 )
-
-
         );
-
-
     }
     @Override
     public void onInit(){
@@ -150,6 +146,14 @@ public class redCloseAuto extends NextFTCOpMode {
     public void onStartButtonPressed(){
 
         run().schedule();
+    }
+
+    public void onUpdate(){
+        CommandManager.INSTANCE.snapshot();
+
+        telemetry.addData("Commands", CommandManager.INSTANCE.snapshot());
+        telemetry.update();
+
     }
 
     public void onStop() {
