@@ -31,7 +31,7 @@ public class redSimple extends NextFTCOpMode {
                         RampS.INSTANCE, RampW1.INSTANCE, RampW2.INSTANCE, rampAdj.INSTANCE)
         );
     }
-    Pose startPose =  new Pose(57, 9, Math.toRadians(180)).mirror();//look at the pedro path generator for a visual rep
+    Pose startPose =  new Pose(57, 9, Math.toRadians(180));//look at the pedro path generator for a visual rep
     Pose shootPose = new Pose(60, 17, Math.toRadians(225));
     Pose PPGpose = new Pose(40, 35, Math.toRadians(180));
     Pose PPGposeC = new Pose(60, 35);
@@ -39,7 +39,7 @@ public class redSimple extends NextFTCOpMode {
     Pose PGPpose = new Pose(40, 60, Math.toRadians(180));
     Pose PGPposeC= new Pose(57, 52);
     Pose PGPf = new Pose(20, 60, Math.toRadians(180));
-    Pose strafeRight = new Pose(57,40, Math.toRadians(180)).mirror();
+    Pose strafeRight = new Pose(57,40, Math.toRadians(180));
 
     public static Pose autoEndPose = new Pose();
     PathChain StartToShoot;
