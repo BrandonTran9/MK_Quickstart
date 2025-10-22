@@ -16,8 +16,8 @@ import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
 import com.pedropathing.util.Timer;
 
-@Autonomous(name = "bluePedroPathing")
-public class bluePedroPathing extends OpMode {
+@Autonomous(name = "bluePedroPathingV3")
+public class bluePedroPathingV3 extends OpMode {
     public PedroComponent follower;
     public Timer pathTimer, opmodeTimer;
 

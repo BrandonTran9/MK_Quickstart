@@ -16,7 +16,7 @@ public class rampAdj implements Subsystem {
 
     private ServoEx servo = new ServoEx("rampAdj");
 
-    public Command up = new SetPosition(servo, .4).requires(this);
+    public Command up = new SetPosition(servo, .45).requires(this);
     public Command flat = new SetPosition(servo, .25).requires(this);
     public Command half = new SetPosition(servo, 0.375).requires(this);
 }
