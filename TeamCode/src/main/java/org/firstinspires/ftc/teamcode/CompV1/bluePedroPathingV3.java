@@ -1,20 +1,18 @@
 package org.firstinspires.ftc.teamcode.CompV1;
 
-import static dev.nextftc.extensions.pedro.PedroComponent.follower;
-
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
+import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-
+import com.pedropathing.follower.Follower;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
-import com.pedropathing.util.Timer;
 
 @Autonomous(name = "bluePedroPathingV3")
 public class bluePedroPathingV3 extends OpMode {

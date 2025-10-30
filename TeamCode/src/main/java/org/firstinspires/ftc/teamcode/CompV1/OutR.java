@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.CompV1;
 
-
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.subsystems.Subsystem;
@@ -9,17 +8,19 @@ import dev.nextftc.hardware.impl.MotorEx;
 
 public class OutR implements Subsystem {
     public static final OutR INSTANCE = new OutR();
-    private OutR() { }
+    private OutR() {
+
+    }
 
     private MotorEx motor = new MotorEx("outR");
 
 
     private ControlSystem controlSystem = ControlSystem.builder()
-            .velPid(.00025, 0, 0)
+            .velPid(.00225, .0000, 0)
             .build();
 
     public Command Out (){
-        return new RunToVelocity(controlSystem, 3000).requires(this);
+        return new RunToVelocity(controlSystem, 1500, 1500).requires(this);
     }
 
 

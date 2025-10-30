@@ -33,7 +33,7 @@ public class redCloseAuto extends NextFTCOpMode {
                         RampS.INSTANCE, RampW1.INSTANCE, RampW2.INSTANCE, rampAdj.INSTANCE)
         );
     }
-    Pose startPose =  new Pose(56.5, 135, Math.toRadians(0));//look at the pedro path generator for a visual rep
+    Pose startPose =  new Pose(118, 129, Math.toRadians(215));//look at the pedro path generator for a visual rep
     Pose shootPose = new Pose(60, 93, Math.toRadians(215));
     Pose GPPpose = new Pose(40, 84, Math.toRadians(180));
     Pose GPPposeC = new Pose(56, 83.5);
@@ -95,10 +95,13 @@ public class redCloseAuto extends NextFTCOpMode {
          return new SequentialGroup(
 
                 new ParallelGroup(
-                new FollowPath(StartToShoot),
-                OutR.INSTANCE.Out().endAfter(2),
-                OutL.INSTANCE.Out().endAfter(2)
+                //new FollowPath(StartToShoot),
+                        rampAdj.INSTANCE.flat
                 ),
+                 new ParallelGroup(
+                         OutR.INSTANCE.Out().endAfter(2),
+                         OutL.INSTANCE.Out().endAfter(2)
+                 ),
                 new SequentialGroup(
                 Intake.INSTANCE.In(),
                 RampW1.INSTANCE.Go,

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.CompV1;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.core.commands.Command;
@@ -9,17 +10,19 @@ import dev.nextftc.hardware.impl.MotorEx;
 
 public class OutL implements Subsystem {
     public static final OutL INSTANCE = new OutL();
-    private OutL() { }
+    private OutL() {
+
+    }
 
     private MotorEx motor = new MotorEx("outL");
 
 
     private ControlSystem controlSystem = ControlSystem.builder()
-            .velPid(.00025, 0, 0)
+            .velPid(.00225, .0000, 0)
             .build();
 
     public Command Out (){
-        return new RunToVelocity(controlSystem, -3000).requires(this);
+        return new RunToVelocity(controlSystem, -1500, 1500).requires(this);
     }
 
 
