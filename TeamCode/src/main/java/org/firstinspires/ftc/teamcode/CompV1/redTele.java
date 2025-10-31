@@ -51,6 +51,7 @@ public class redTele extends NextFTCOpMode {
         follower.setStartingPose(blueFarAuto.autoEndPose);
         follower.update();
         telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
+        rampAdj.INSTANCE.half.schedule();
 
         Shoot = () -> follower.pathBuilder() //Lazy Curve Generation
                 .addPath(new Path(new BezierLine(follower::getPose, new Pose(85, 95))))

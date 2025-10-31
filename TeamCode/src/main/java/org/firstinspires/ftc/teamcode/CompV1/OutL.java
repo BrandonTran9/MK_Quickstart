@@ -10,7 +10,7 @@ import dev.nextftc.hardware.impl.MotorEx;
 
 public class OutL implements Subsystem {
     public static final OutL INSTANCE = new OutL();
-    private OutL() {
+    public OutL() {
 
     }
 
@@ -18,11 +18,11 @@ public class OutL implements Subsystem {
 
 
     private ControlSystem controlSystem = ControlSystem.builder()
-            .velPid(.00225, .0000, 0)
+            .velPid(.00215, .0000, 0.01)
             .build();
 
     public Command Out (){
-        return new RunToVelocity(controlSystem, -1500, 1500).requires(this);
+        return new RunToVelocity(controlSystem, -1750, 1500).requires(this);
     }
 
 

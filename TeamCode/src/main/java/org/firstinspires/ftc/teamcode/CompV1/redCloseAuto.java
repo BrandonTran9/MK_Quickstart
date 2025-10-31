@@ -21,9 +21,11 @@ import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
+import org.firstinspires.ftc.teamcode.CompV1.OutL;
 
 @Autonomous(name = "RedClose")
 public class redCloseAuto extends NextFTCOpMode {
+    OutL outL = new OutL();
     public redCloseAuto() {
         addComponents(
                 new PedroComponent(Constants::createFollower),
@@ -96,10 +98,10 @@ public class redCloseAuto extends NextFTCOpMode {
 
                 new ParallelGroup(
                 //new FollowPath(StartToShoot),
-                        rampAdj.INSTANCE.flat
+                        rampAdj.INSTANCE.up
                 ),
                  new ParallelGroup(
-                         OutR.INSTANCE.Out().endAfter(2),
+                         OutR.INSTANCE.Out(),
                          OutL.INSTANCE.Out().endAfter(2)
                  ),
                 new SequentialGroup(
@@ -152,9 +154,8 @@ public class redCloseAuto extends NextFTCOpMode {
     }
 
     public void onUpdate(){
-        CommandManager.INSTANCE.snapshot();
 
-        telemetry.addData("Commands", CommandManager.INSTANCE.snapshot());
+        telemetry.addData("Velocity", OutL.INSTANCE.Out());
         telemetry.update();
 
     }
