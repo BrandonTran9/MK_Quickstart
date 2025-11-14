@@ -16,11 +16,11 @@ public class OutR implements Subsystem {
 
 
     private ControlSystem controlSystem = ControlSystem.builder()
-            .velPid(.000125, .000001, 100)
+            .basicFF(11.1, 0, 0)
             .build();
 
     public Command Out (){
-        return new RunToVelocity(controlSystem, 1400, 1500).requires(this);
+        return new RunToVelocity(controlSystem, 1400).requires(this);
     }
 
 

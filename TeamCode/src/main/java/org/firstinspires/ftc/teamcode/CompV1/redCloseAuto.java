@@ -98,18 +98,26 @@ public class redCloseAuto extends NextFTCOpMode {
 
                 new ParallelGroup(
                 //new FollowPath(StartToShoot),
-                        rampAdj.INSTANCE.up
+                        rampAdj.INSTANCE.half
                 ),
                  new ParallelGroup(
-                         OutR.INSTANCE.Out(),
-                         OutL.INSTANCE.Out().endAfter(2)
+                         RampW2.INSTANCE.Go,
+                         RampW1.INSTANCE.Go,
+                         RampS.INSTANCE.Go,
+                        out.INSTANCE.Out().endAfter(2)
+                        // OutR.INSTANCE.Out(),
+                         //OutL.INSTANCE.Out().endAfter(2)
                  ),
-                new SequentialGroup(
+                new ParallelGroup(
                 Intake.INSTANCE.In(),
                 RampW1.INSTANCE.Go,
                 RampW2.INSTANCE.Go,
-                RampS.INSTANCE.Go,
-                new Delay(5),
+                RampS.INSTANCE.Go.endAfter(5)
+                ),
+
+                new ParallelGroup(
+                OutR.INSTANCE.Stop(),
+                OutL.INSTANCE.Stop(),
                 RampW2.INSTANCE.no,
                 RampS.INSTANCE.no,
                 new FollowPath(ShootToGPP),
@@ -118,10 +126,16 @@ public class redCloseAuto extends NextFTCOpMode {
                 new FollowPath(GPPToShoot)
                 ),
 
-                new SequentialGroup(
+                new ParallelGroup(
                 RampW2.INSTANCE.Go,
                 RampS.INSTANCE.Go,
-                new Delay(3),
+                OutR.INSTANCE.Out(),
+                OutL.INSTANCE.Out().endAfter(5)
+                        ),
+
+                new ParallelGroup(
+                OutR.INSTANCE.Stop(),
+                OutL.INSTANCE.Stop(),
                 RampW2.INSTANCE.no,
                 RampS.INSTANCE.no,
                 new FollowPath(ShootToPGP),
@@ -129,7 +143,9 @@ public class redCloseAuto extends NextFTCOpMode {
                 new Delay(.25),
                 new FollowPath(PGPToShoot)
                 ),
-                new SequentialGroup(
+                new ParallelGroup(
+                OutR.INSTANCE.Out(),
+                OutL.INSTANCE.Out(),
                 RampW2.INSTANCE.Go,
                 RampS.INSTANCE.Go,
                 new Delay(3)
