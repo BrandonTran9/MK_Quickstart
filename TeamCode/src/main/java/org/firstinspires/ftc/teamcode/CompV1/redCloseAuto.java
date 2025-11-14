@@ -32,7 +32,7 @@ public class redCloseAuto extends NextFTCOpMode {
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE,
                 new SubsystemComponent(Intake.INSTANCE, RampS.INSTANCE, RampW1.INSTANCE,
-                        RampW2.INSTANCE, rampAdj.INSTANCE, out.INSTANCE)
+                        RampW2.INSTANCE, rampAdj.INSTANCE, OutL.INSTANCE, OutR.INSTANCE)
         );
     }
     Pose startPose =  new Pose(118, 129, Math.toRadians(215));//look at the pedro path generator for a visual rep
@@ -155,7 +155,8 @@ public class redCloseAuto extends NextFTCOpMode {
 
     public void onUpdate(){
 
-        telemetry.addData("Velocity", OutL.getVelocity());
+        telemetry.addData("Left Outtake Velocity", OutL.getVelocity());
+        telemetry.addData("Right Outtake Velocity", OutR.getVelocity());
         telemetry.update();
 
     }

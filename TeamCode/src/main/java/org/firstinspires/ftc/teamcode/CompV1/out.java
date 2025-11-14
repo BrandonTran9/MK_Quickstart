@@ -6,7 +6,7 @@ import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.MotorGroup;
 import dev.nextftc.hardware.controllable.RunToVelocity;
 import dev.nextftc.hardware.impl.MotorEx;
-
+/*
 public class out implements Subsystem {
     public static final out INSTANCE = new out();
     public out(){
@@ -15,8 +15,8 @@ public class out implements Subsystem {
 
 
     MotorGroup motors = new MotorGroup(
-            new MotorEx("ourR"),
-            new MotorEx("outL").reversed()
+            new MotorEx("outR"),
+            new MotorEx("outL")
     );
 
     private ControlSystem controlSystem = ControlSystem.builder()
@@ -41,3 +41,4 @@ public class out implements Subsystem {
     }
 
 }
+ */

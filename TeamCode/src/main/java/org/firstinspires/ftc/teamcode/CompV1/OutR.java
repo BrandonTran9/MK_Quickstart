@@ -16,11 +16,11 @@ public class OutR implements Subsystem {
 
 
     private ControlSystem controlSystem = ControlSystem.builder()
-            .velPid(.00225, .0000, 0.01)
+            .velPid(.000125, .000001, 100)
             .build();
 
     public Command Out (){
-        return new RunToVelocity(controlSystem, 1750, 1500).requires(this);
+        return new RunToVelocity(controlSystem, 1400, 1500).requires(this);
     }
 
 
@@ -33,6 +33,9 @@ public class OutR implements Subsystem {
     public void periodic() {
         motor.setPower(controlSystem.calculate(motor.getState()));
 
+    }
+    public static double getVelocity() {
+        return INSTANCE.motor.getVelocity();
     }
 }
 
