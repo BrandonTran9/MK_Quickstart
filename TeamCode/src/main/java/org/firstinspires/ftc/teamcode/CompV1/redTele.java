@@ -28,7 +28,7 @@ public class redTele extends NextFTCOpMode {
     public redTele() {
         addComponents(
                 new SubsystemComponent(Intake.INSTANCE,OutL.INSTANCE,OutR.INSTANCE,
-                        RampS.INSTANCE, RampW1.INSTANCE, rampAdj.INSTANCE),
+                        RampS.INSTANCE, RampW1.INSTANCE, rampAdj.INSTANCE,out.INSTANCE),
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE
 
@@ -87,10 +87,10 @@ public class redTele extends NextFTCOpMode {
                 .whenBecomesFalse(RampW2.INSTANCE.no);
 
         button(() -> gamepad2.a)
-                .whenBecomesTrue(OutL.INSTANCE.Out())
-                        .whenBecomesTrue(OutR.INSTANCE.Out())
-                                .whenBecomesFalse(OutL.INSTANCE.Stop())
-                                        .whenBecomesFalse(OutR.INSTANCE.Stop());
+                //.whenBecomesTrue(OutL.INSTANCE.Out())
+                        .whenBecomesTrue(out.INSTANCE.Out())
+                                .whenBecomesFalse(out.INSTANCE.Out());
+                                        //.whenBecomesFalse(OutR.INSTANCE.Stop());
 
         button(() -> gamepad2.dpad_up)
                 .whenBecomesTrue(rampAdj.INSTANCE.up);

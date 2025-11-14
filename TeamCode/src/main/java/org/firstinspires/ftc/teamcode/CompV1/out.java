@@ -1,23 +1,23 @@
 package org.firstinspires.ftc.teamcode.CompV1;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-
 import dev.nextftc.control.ControlSystem;
-import dev.nextftc.control.KineticState;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.subsystems.Subsystem;
+import dev.nextftc.hardware.controllable.MotorGroup;
 import dev.nextftc.hardware.controllable.RunToVelocity;
 import dev.nextftc.hardware.impl.MotorEx;
 
-public class OutL implements Subsystem {
-    public static final OutL INSTANCE = new OutL();
-    public OutL() {
+public class out implements Subsystem {
+    public static final out INSTANCE = new out();
+    public out(){
 
     }
 
-    private MotorEx motor = new MotorEx("outL");
 
-
+    MotorGroup motors = new MotorGroup(
+            new MotorEx("ourR"),
+            new MotorEx("outL").reversed()
+    );
 
     private ControlSystem controlSystem = ControlSystem.builder()
             .velPid(.00215, .0000, 0.01)
@@ -27,19 +27,17 @@ public class OutL implements Subsystem {
         return new RunToVelocity(controlSystem, -1750, 1500).requires(this);
     }
 
-
     public Command Stop (){
         return new RunToVelocity(controlSystem, 0).requires(this);
     }
 
-
     @Override
     public void periodic() {
-        motor.setPower(controlSystem.calculate(motor.getState()));
+        motors.setPower(controlSystem.calculate(motors.getState()));
 
     }
     public static double getVelocity() {
-        return INSTANCE.motor.getVelocity();
+        return INSTANCE.motors.getVelocity();
     }
-}
 
+}
