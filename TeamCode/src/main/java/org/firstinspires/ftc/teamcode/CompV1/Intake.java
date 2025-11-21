@@ -15,7 +15,8 @@ public class Intake implements Subsystem {
 
 
     private ControlSystem controlSystem = ControlSystem.builder()
-            .velPid(.00025, 0, 0)
+            //.velPid(.00085, 0, 0)
+            .basicFF(20, 0, 1)
             .build();
 
     public Command In (){
@@ -37,6 +38,9 @@ public class Intake implements Subsystem {
     public void periodic() {
         motor.setPower(controlSystem.calculate(motor.getState()));
 
+    }
+    public static double getVelocity() {
+        return INSTANCE.motor.getVelocity();
     }
 }
 
