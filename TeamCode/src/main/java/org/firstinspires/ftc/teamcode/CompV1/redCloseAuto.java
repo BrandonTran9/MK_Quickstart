@@ -177,6 +177,7 @@ public class redCloseAuto extends NextFTCOpMode {
 
     }
 
+
     public void onStop() {
         Intake.INSTANCE.Stop().schedule();
         OutL.INSTANCE.Stop().schedule();
