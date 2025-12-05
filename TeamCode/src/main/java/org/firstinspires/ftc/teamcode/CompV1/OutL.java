@@ -20,12 +20,11 @@ public class OutL implements Subsystem {
 
 
     private ControlSystem controlSystem = ControlSystem.builder()
-//            .velPid(.00215, .0, 0.05)
-            .velPid(.0025, 0, 0.02)
+            .basicFF(.0004, 0, 0.0075)
             .build();
 
     public Command Out (){
-        return new RunToVelocity(controlSystem, -1400, 1500).requires(this);
+        return new RunToVelocity(controlSystem, -1400, 150).requires(this);
     }
 
 

@@ -15,6 +15,7 @@ import dev.nextftc.core.commands.CommandManager;
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
+import dev.nextftc.core.commands.utility.PerpetualCommand;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.extensions.pedro.FollowPath;
@@ -100,16 +101,17 @@ public class redCloseAuto extends NextFTCOpMode {
                 //new FollowPath(StartToShoot),
                         rampAdj.INSTANCE.half
                 ),
+                 new PerpetualCommand(
                  new ParallelGroup(
-                         RampW2.INSTANCE.Go,
-                         RampW1.INSTANCE.Go,
-                         RampS.INSTANCE.Go,
-                        out.INSTANCE.Out().endAfter(2)
-                        // OutR.INSTANCE.Out(),
-                         //OutL.INSTANCE.Out().endAfter(2)
+                        // RampW2.INSTANCE.Go.endAfter(2),
+                         //RampW1.INSTANCE.Go.endAfter(2),
+                         //RampS.INSTANCE.Go.endAfter(2),
+                         OutR.INSTANCE.Out(),
+                         OutL.INSTANCE.Out(),
+                         Intake.INSTANCE.In()
+                 )
                  ),
                 new ParallelGroup(
-                Intake.INSTANCE.In(),
                 RampW1.INSTANCE.Go,
                 RampW2.INSTANCE.Go,
                 RampS.INSTANCE.Go.endAfter(5)
